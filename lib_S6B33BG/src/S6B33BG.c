@@ -25,7 +25,7 @@ static unsigned char *FontTable[] = {
     (unsigned char *)FONT8x16
 };
 
-static PIN pins[13]={
+static PIN pins[]={
   {{DB0_Pin,DB0_Speed,DB0_Mode},DB0_Port,DB0_Bus},
   {{DB1_Pin,DB1_Speed,DB1_Mode},DB1_Port,DB1_Bus},
   {{DB2_Pin,DB2_Speed,DB2_Mode},DB2_Port,DB2_Bus},
