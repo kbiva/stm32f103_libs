@@ -3,8 +3,8 @@
  *
  *  Author: Kestutis Bivainis
  *
- *  Original source code from 
- *  http://kazus.ru/forums/showthread.php?t=100566 
+ *  Original source code from
+ *  http://kazus.ru/forums/showthread.php?t=100566
  */
 
 #ifndef _1_WIRECRC_H

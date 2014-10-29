@@ -3,7 +3,7 @@
  *
  *  Author: Kestutis Bivainis
  *
- *  Original source code from 
+ *  Original source code from
  *  http://kazus.ru/forums/showthread.php?t=100566
  */
 
@@ -12,7 +12,7 @@
 #include "delay.h"
 
 void One_Wire_Pin_In(void) {
-	
+
   GPIO_InitTypeDef GPIO_InitStruct;
   GPIO_InitStruct.GPIO_Pin=ONE_WIRE_PIN;
   GPIO_InitStruct.GPIO_Mode=GPIO_Mode_IN_FLOATING;
@@ -20,7 +20,7 @@ void One_Wire_Pin_In(void) {
 }
 
 void One_Wire_Pin_Out(void) {
-	
+
   GPIO_InitTypeDef GPIO_InitStruct;
   GPIO_InitStruct.GPIO_Pin=ONE_WIRE_PIN;
   GPIO_InitStruct.GPIO_Speed=GPIO_Speed_50MHz;
@@ -29,12 +29,12 @@ void One_Wire_Pin_Out(void) {
 }
 
 void One_Wire_Init(void) {
-	
+
   RCC_APB2PeriphClockCmd(ONE_WIRE_BUS, ENABLE);
 }
 
 uint8_t One_Wire_Reset(void) {
-	
+
   uint8_t tmp;
   One_Wire_Pin_In();
   if((ONE_WIRE_PIN_READ)==0)
@@ -54,20 +54,20 @@ uint8_t One_Wire_Reset(void) {
 }
 
 void One_Wire_Write_Byte(uint8_t Byte) {
-	
+
   uint8_t cnt;
   for(cnt=0;cnt!=8;cnt++)
     One_Wire_Write_Bit(Byte&(1<<cnt));
 }
 
 void One_Wire_Write_Bit(uint8_t Bit) {
-	
+
   One_Wire_Pin_Out();
   ONE_WIRE_PIN_LOW;
   if(Bit) {
-		DWT_Delay(Time_Pulse_Delay_Low);
+    DWT_Delay(Time_Pulse_Delay_Low);
     ONE_WIRE_PIN_HIGH;
-    DWT_Delay(Time_Pulse_Delay_High);    
+    DWT_Delay(Time_Pulse_Delay_High);
   }
   else {
     DWT_Delay(Time_Pulse_Delay_High);
@@ -78,7 +78,7 @@ void One_Wire_Write_Bit(uint8_t Bit) {
 }
 
 uint8_t One_Wire_Read_Byte(void) {
-	
+
   uint8_t tmp=0;
   uint8_t cnt;
   for(cnt=0;cnt!=8;cnt++)
@@ -89,7 +89,7 @@ uint8_t One_Wire_Read_Byte(void) {
 }
 
 uint8_t One_Wire_Read_Bit(void) {
-	
+
   uint8_t tmp;
   One_Wire_Pin_Out();
   ONE_WIRE_PIN_LOW;

@@ -3,8 +3,8 @@
  *
  *  Author: Kestutis Bivainis
  *
- *  Original source code from 
- *  http://kazus.ru/forums/showthread.php?t=100566 
+ *  Original source code from
+ *  http://kazus.ru/forums/showthread.php?t=100566
  */
 
 #include "1-Wire.h"
@@ -14,7 +14,7 @@
 uint8_t Search_Rom_SN[One_Wire_Device_Number_MAX][DS18B20_SERIAL_NUM_SIZE];
 
 uint8_t DS18B20_Search_Rom_One_Device(uint8_t (*Serial_Num)[DS18B20_SERIAL_NUM_SIZE]) {
-	
+
   uint8_t cnt_bits;
   uint8_t cnt_bytes;
   uint8_t tmp;
@@ -44,7 +44,7 @@ uint8_t DS18B20_Search_Rom_One_Device(uint8_t (*Serial_Num)[DS18B20_SERIAL_NUM_S
 }
 
 uint8_t DS18B20_Start_Conversion_by_ROM(uint8_t (*Serial_Num)[DS18B20_SERIAL_NUM_SIZE]) {
-	
+
   uint8_t cnt;
   cnt=One_Wire_Reset();
   if (cnt!=One_Wire_Success)
@@ -57,7 +57,7 @@ uint8_t DS18B20_Start_Conversion_by_ROM(uint8_t (*Serial_Num)[DS18B20_SERIAL_NUM
 }
 
 uint8_t DS18B20_Get_Conversion_Result_by_ROM_CRC(uint8_t (*Serial_Num)[DS18B20_SERIAL_NUM_SIZE],uint32_t *temperature) {
-	
+
   uint8_t cnt;
   uint8_t inbuff[DS18B20_STRATCHPAD_SIZE];
   cnt=One_Wire_Reset();
@@ -70,13 +70,13 @@ uint8_t DS18B20_Get_Conversion_Result_by_ROM_CRC(uint8_t (*Serial_Num)[DS18B20_S
   for(cnt=0;cnt!=DS18B20_STRATCHPAD_SIZE;cnt++)
     inbuff[cnt]=One_Wire_Read_Byte();
   if(Crc8Dallas(DS18B20_STRATCHPAD_SIZE,inbuff))
-		return One_Wire_CRC_Error;
- 	*temperature = inbuff[0]|(inbuff[1]<<8);
+    return One_Wire_CRC_Error;
+  *temperature = inbuff[0]|(inbuff[1]<<8);
   return One_Wire_Success;
 }
 
 uint8_t DS18B20_Search_Rom(uint8_t *devices_found) {
-	
+
   unsigned long path,next,pos;                    // decision markers
   uint8_t bit,chk;                                // bit values
   uint8_t cnt_bit, cnt_byte, cnt_num,tmp;
@@ -160,7 +160,7 @@ uint8_t DS18B20_Search_Rom2(uint8_t *devices_found, uint8_t (* SN_ROM)[One_Wire_
 }
 
 uint8_t DS18B20_Start_Conversion_Skip_Rom(void) {
-	
+
   uint8_t tmp;
   tmp=One_Wire_Reset();
   if(tmp!=One_Wire_Success)
@@ -173,7 +173,7 @@ uint8_t DS18B20_Start_Conversion_Skip_Rom(void) {
 }
 
 uint8_t DS18B20_Read_Temp_NoCRC_Skip_Rom(uint32_t *temperature) {
-	
+
   uint8_t tmp;
   tmp=One_Wire_Reset();
   if(tmp!=One_Wire_Success)
