@@ -45,17 +45,6 @@ static void GPIO_Configuration(void){
     RCC_APB2PeriphClockCmd(pins[i].GPIO_Bus,ENABLE);
     GPIO_Init(pins[i].GPIOx,&pins[i].GPIO_InitStructure);
   }
-
-
-  /* RST */
-
-//  GPIO_SetBits(GPIOD, GPIO_Pin_7);      //CS=1
-//  GPIO_SetBits(GPIOD, GPIO_Pin_14| GPIO_Pin_15 |GPIO_Pin_0 | GPIO_Pin_1);  //??8?
-//  GPIO_SetBits(GPIOE, GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10); //??8?
-
-//  GPIO_ResetBits(GPIOE, GPIO_Pin_1);    //RESET=0
-//  GPIO_SetBits(GPIOD, GPIO_Pin_4);      //RD=1
-//  GPIO_SetBits(GPIOD, GPIO_Pin_5);      //RW=1
 }
 
 static void FSMC_LCD_Init(void) {
