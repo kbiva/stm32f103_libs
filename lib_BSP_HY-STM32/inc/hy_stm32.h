@@ -1,3 +1,9 @@
+/*
+ *  hy_stm32.h
+ *
+ *  Author: Kestutis Bivainis
+ */
+
 #ifndef _HY_STM32_H_
 #define _HY_STM32_H_
 

@@ -1,3 +1,9 @@
+/*
+ *  hy_stm32.c
+ *
+ *  Author: Kestutis Bivainis
+ */
+ 
 #include "stm32f10x_conf.h"
 #include "hy_stm32.h"
 
