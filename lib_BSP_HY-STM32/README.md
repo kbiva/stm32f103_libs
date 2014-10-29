@@ -1,7 +1,8 @@
 # README #
 
 * lib_BSP_HY-STM32
-  > HY-STM32 board support library for onboard LEDs and buttons.
+
+HY-STM32 board support library for onboard LEDs and buttons.
 
 ### How do I get set up? ###
 
