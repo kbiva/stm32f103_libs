@@ -1,7 +1,8 @@
 # README #
 
 * lib_delay
-  > Microseconds delay.
+
+Microseconds delay.
 
 ### How do I get set up? ###
 
