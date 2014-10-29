@@ -8,7 +8,7 @@
 If using BUTTON_MODE_EXTI, interrupt handler for EXTI line must be configured in the program.
 
 ### Usage example ###
-
+```C
   void EXTI2_IRQHandler(void) {
     if(EXTI_GetITStatus(EXTI_Line2) != RESET) {
       // BUTTON4 is pressed
@@ -28,5 +28,5 @@ If using BUTTON_MODE_EXTI, interrupt handler for EXTI line must be configured in
   ...
   button_state=BSP_Button_GetState(BUTTON3);
   ...
-
+```
 
