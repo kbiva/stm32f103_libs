@@ -1,0 +1,13 @@
+*.build_log.htm
+*.uvguix.*
+*.bak
+*.uvoptx
+*.d
+*.dep
+*.crf
+*.o
+*.Scr
+*.lib
+*.lst
+*.a
+*.bat
