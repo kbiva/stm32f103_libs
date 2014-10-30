@@ -4,7 +4,7 @@
  *  Author: Kestutis Bivainis
  *
  */
- 
+
 #ifndef R61523_H
 #define R61523_H
 
@@ -194,7 +194,7 @@ enum COMMANDS {
 };
 
 #define LCD_REG16     (*((volatile uint16_t*)0x60000000))
-#define LCD_DAT16     (*((volatile uint16_t*)0x60020000)) 
+#define LCD_DAT16     (*((volatile uint16_t*)0x60020000))
 
 void R61523_Init(void);
 void R61523_OrientationMode(ORIENTATION_MODE orientation_mode);
