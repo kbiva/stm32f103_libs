@@ -23,22 +23,22 @@ FatFs library. Depends on lib_SD_FatFs.
 Renesas HD66773R LCD library. Depends on lib_delay.
 * lib_HD66773R
 
-ILI9328 LCD library. Depends on lib_delay.
+Ilitek ILI9328 LCD library. Depends on lib_delay.
 * lib_LGDP4532
   
-LGDP4532 LCD library. Depends on lib_delay.
+LG LGDP4532 LCD library. Depends on lib_delay.
 * lib_MC2PA8201
   
-MC2PA8201 LCD library (Nokia E63,E73). Depends on lib_delay.
+MagnaChip MC2PA8201 LCD library (Nokia E63,E73). Depends on lib_delay.
 * lib_PCF8833
   
-PCF8833 LCD library (Nokia 3100,6100,6020,6030). Depends on lib_delay.
+Philips PCF8833 LCD library (Nokia 3100,6100,6020,6030). Depends on lib_delay.
 * lib_R61523
   
-R61523 LCD library (Sony Ericsson U5 Vivaz). Depends on lib_delay.
+Renesas R61523 LCD library (Sony Ericsson U5 Vivaz). Depends on lib_delay.
 * lib_S6B33BG
   
-S6B33BG LCD library (Samsung GT-E1050). Depends on lib_delay.
+Samsung S6B33BG LCD library (Samsung GT-E1050). Depends on lib_delay.
 * lib_rtc
   
 RTC
@@ -50,7 +50,7 @@ FatFs lower layer API (SD support). Depends on lib_FatFs,lib_rtc,lib_SD_SDIO.
 SD SDIO low level API.
 * lib_SSD1289
   
-SSD1289 LCD library. Depends on lib_delay.
+Solomon Systech SSD1289 LCD library. Depends on lib_delay.
 * lib_STM32F10x_StdPeriph
   
 Standart Peripheral Library for STMF103xx v3.6.1
