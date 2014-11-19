@@ -20,6 +20,9 @@ DS18D20 digital temperature sensor library. Depends on lib_1-Wire.
 FatFs library. Depends on lib_SD_FatFs.
 * lib_ILI9328
   
+Renesas HD66773R LCD library. Depends on lib_delay.
+* lib_HD66773R
+
 ILI9328 LCD library. Depends on lib_delay.
 * lib_LGDP4532
   
