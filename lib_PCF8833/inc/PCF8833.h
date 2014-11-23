@@ -8,7 +8,7 @@
 #ifndef __PCF8833_H
 #define __PCF8833_H
 
-#include <stdint.h>
+#include "stm32f10x_conf.h"
 
 // Nokia 6100
 //  8bit BGR 3:3:2 (LUT)
