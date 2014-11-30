@@ -8,7 +8,7 @@ All libraries depends on lib_STM32F10x_StdPeriph.
 1-Wire library. Depends on lib_delay.
 * lib_BSP_HY-STM32
   
-HY-STM32 board support library for onboard LEDs and buttons.
+HY-STM32 board support library for onboard components: 4 LEDs, 4 buttons and buzzer.
 * lib_delay
   
 Microseconds delay.
