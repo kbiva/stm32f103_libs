@@ -2,7 +2,7 @@
 
 * lib_BSP_HY-STM32
 
-HY-STM32 board support library for onboard LEDs and buttons.
+HY-STM32 board support library for onboard components: 4 LEDs, 4 buttons and buzzer.
 
 ### How do I get set up? ###
 
@@ -19,6 +19,11 @@ If using BUTTON_MODE_EXTI, interrupt handler for EXTI line must be configured in
   ...
 
   uint32_t button_state;
+
+  BSP_Buzzer_Init();
+  ...
+  BSP_Buzzer_On();
+  ...
 
   BSP_LED_Init(LED1);
   ...
