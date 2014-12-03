@@ -12,10 +12,11 @@ Supports 16bit and 18bit color, landscape and portrait orientation.
   When calling HX8352A_Init() specify color mode.
 
 ### Usage example ###
-
+```C
   ... 
   HX8352A_Init(COLOR_18BIT);
   HX8352A_OrientationMode(ORIENTATION_PORTRAIT);
   ...
   HX8352A_ClearScreen(BLACK);
   ...
+```
