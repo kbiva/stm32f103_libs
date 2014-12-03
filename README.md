@@ -23,6 +23,9 @@ FatFs library. Depends on lib_SD_FatFs.
 Renesas HD66773R LCD library (Samsung E700). Depends on lib_delay.
 * lib_HD66773R
 
+Himax HX8352A LCD library (LG KF700). Depends on lib_delay.
+* lib_HX8352A
+
 Ilitek ILI9328 LCD library. Depends on lib_delay.
 * lib_LGDP4532
   
