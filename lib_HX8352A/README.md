@@ -14,8 +14,6 @@ Supports 16bit and 18bit color, landscape and portrait orientation.
 ### Usage example ###
 
   ... 
-  GPIO_Configuration();
-  FSMC_LCD_Init();	
   HX8352A_Init(COLOR_18BIT);
   HX8352A_OrientationMode(ORIENTATION_PORTRAIT);
   ...
