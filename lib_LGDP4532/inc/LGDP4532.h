@@ -255,6 +255,12 @@ typedef enum _COMMANDS {
   TIMINGCTRL3 = 0xEF
 } COMMANDS;
 
+typedef enum _FONT_SIZE {
+  FONT_6x8 = 0,
+  FONT_8x8 = 1,
+  FONT_8x16 = 2
+} FONT_SIZE;
+
 #define LCD_REG16     (*((volatile uint16_t*)0x60000000))
 #define LCD_DAT16     (*((volatile uint16_t*)0x60020000))
 
@@ -281,5 +287,11 @@ void LGDP4532_ColorMode(COLOR_MODE color_mode);
 
 uint16_t LGDP4532_GetWidth(void);
 uint16_t LGDP4532_GetHeight(void);
+
+void LGDP4532_SetFont(FONT_SIZE font_size);
+void LGDP4532_SetTextColors(uint32_t fColor, uint32_t bColor);
+void LGDP4532_PutChar(char c, uint16_t x, uint16_t y);
+void LGDP4532_PutStr(char *pString, uint16_t x, uint16_t y);
+void LGDP4532_PutStrCEOL(char *pString, uint16_t x, uint16_t y);
 
 #endif

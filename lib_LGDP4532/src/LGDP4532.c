@@ -8,6 +8,20 @@
 #include "stm32f10x_conf.h"
 #include "LGDP4532.h"
 #include "delay.h"
+#include "colors.h"
+#include "font6x8.h"
+#include "font8x8.h"
+#include "font8x16.h"
+
+static uint32_t LGDP4532_text_foreground_color=WHITE;
+static uint32_t LGDP4532_text_background_color=BLACK;
+static FONT_SIZE LGDP4532_font_size;
+
+static unsigned char *FontTable[] = {
+    (unsigned char *)FONT6x8,
+    (unsigned char *)FONT8x8,
+    (unsigned char *)FONT8x16
+};
 
 static COLOR_MODE LGDP4532_color_mode;
 static ORIENTATION_MODE LGDP4532_orientation_mode;
@@ -604,4 +618,153 @@ uint16_t LGDP4532_GetHeight(void) {
     break;
   }
   return ret;
+}
+
+void LGDP4532_SetFont(FONT_SIZE font_size) {
+
+  LGDP4532_font_size=font_size;
+}
+
+void LGDP4532_SetTextColors(uint32_t fColor, uint32_t bColor) {
+
+  LGDP4532_text_foreground_color = fColor;
+  LGDP4532_text_background_color = bColor;
+}
+
+void LGDP4532_PutChar(char c, uint16_t x, uint16_t y) {
+
+  uint32_t i,j;
+  uint32_t nCols;
+  uint32_t nRows;
+  uint32_t nBytes;
+  uint8_t PixelRow;
+  uint8_t Mask;
+  uint32_t Word0;
+  uint32_t Word1;
+  unsigned char *pFont;
+  unsigned char *pChar;
+  uint16_t data1,data2;
+
+  // get pointer to the beginning of the selected font table
+  pFont = (unsigned char *)FontTable[LGDP4532_font_size];
+
+  // get the nColumns, nRows and nBytes
+  nCols = *pFont;
+  nRows = *(pFont + 1);
+  nBytes = *(pFont + 2);
+
+  // get pointer to the first byte of the desired character
+  pChar = pFont + (nBytes * (c - 0x1F));
+
+  LGDP4532_SetWindow(x,y,x + nCols - 1,y + nRows - 1);
+
+  // loop on each row
+  for (i = 0; i < nRows; i++) {
+		
+    // copy pixel row from font table and then decrement row
+    PixelRow = *pChar++;
+
+    // loop on each pixel in the row (left to right)
+    // Note: we do two pixels each loop
+    Mask = 0x80;
+    for (j = 0; j < nCols; j += 2) {
+			
+      // if pixel bit set, use foreground color; else use the background color
+      // now get the pixel color for two successive pixels
+      if (PixelRow & Mask)
+        Word0 = LGDP4532_text_foreground_color;
+      else
+        Word0 = LGDP4532_text_background_color;
+      Mask >>= 1;
+
+      if (PixelRow & Mask)
+        Word1 = LGDP4532_text_foreground_color;
+      else
+        Word1 = LGDP4532_text_background_color;
+      Mask >>= 1;
+
+			switch(LGDP4532_color_mode){
+        case COLOR_16BIT:
+          data1=(Word0 & 0xf80000) >> 8 | (Word0 & 0xfc00) >> 5 | (Word0 & 0xf8) >> 3;
+          wr_dat(data1);
+				  data2=(Word1 & 0xf80000) >> 8 | (Word1 & 0xfc00) >> 5 | (Word1 & 0xf8) >> 3;
+          wr_dat(data2);
+          break;
+        case COLOR_18BIT:
+          data1=Word0>>22;
+          data2=(Word0 & 0xfc0000) >> 6 | (Word0 & 0xfc00) >> 4 | (Word0 & 0xfc) >> 2;
+          wr_dat(data1);
+          wr_dat(data2);
+				  data1=Word1>>22;
+          data2=(Word1 & 0xfc0000) >> 6 | (Word1 & 0xfc00) >> 4 | (Word1 & 0xfc) >> 2;
+          wr_dat(data1);
+          wr_dat(data2);
+        break;
+      }
+    }
+  }
+}
+
+void LGDP4532_PutStr(char *pString, uint16_t x, uint16_t y) {
+
+  // loop until null-terminator is seen
+  while (*pString)
+  {
+    // draw the character
+    LGDP4532_PutChar(*pString++, x, y);
+
+    switch(LGDP4532_font_size) {
+      case FONT_6x8:
+        x+=6;
+      break;
+      case FONT_8x8:
+        x+=8;
+      break;
+      case FONT_8x16:
+        x+=8;
+      break;
+    }
+
+    if (x > LGDP4532_GetWidth()-1) break;
+  }
+}
+
+void LGDP4532_PutStrCEOL(char *pString, uint16_t x, uint16_t y) {
+
+  // loop until null-terminator is seen
+  while (*pString)
+  {
+    // draw the character
+    LGDP4532_PutChar(*pString++, x, y);
+
+    switch(LGDP4532_font_size) {
+      case FONT_6x8:
+        x+=6;
+      break;
+      case FONT_8x8:
+        x+=8;
+      break;
+      case FONT_8x16:
+        x+=8;
+      break;
+    }
+
+    if (x > LGDP4532_GetWidth()-1) break;
+  }
+	while(x < LGDP4532_GetWidth()-1) {
+		
+		LGDP4532_PutChar(' ', x, y);
+
+    switch(LGDP4532_font_size) {
+      case FONT_6x8:
+        x+=6;
+      break;
+      case FONT_8x8:
+        x+=8;
+      break;
+      case FONT_8x16:
+        x+=8;
+      break;
+    }
+	}
 }
