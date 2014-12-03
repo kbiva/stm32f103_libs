@@ -660,7 +660,7 @@ void LGDP4532_PutChar(char c, uint16_t x, uint16_t y) {
 
   // loop on each row
   for (i = 0; i < nRows; i++) {
-		
+
     // copy pixel row from font table and then decrement row
     PixelRow = *pChar++;
 
@@ -668,7 +668,7 @@ void LGDP4532_PutChar(char c, uint16_t x, uint16_t y) {
     // Note: we do two pixels each loop
     Mask = 0x80;
     for (j = 0; j < nCols; j += 2) {
-			
+
       // if pixel bit set, use foreground color; else use the background color
       // now get the pixel color for two successive pixels
       if (PixelRow & Mask)
@@ -683,11 +683,11 @@ void LGDP4532_PutChar(char c, uint16_t x, uint16_t y) {
         Word1 = LGDP4532_text_background_color;
       Mask >>= 1;
 
-			switch(LGDP4532_color_mode){
+      switch(LGDP4532_color_mode){
         case COLOR_16BIT:
           data1=(Word0 & 0xf80000) >> 8 | (Word0 & 0xfc00) >> 5 | (Word0 & 0xf8) >> 3;
           wr_dat(data1);
-				  data2=(Word1 & 0xf80000) >> 8 | (Word1 & 0xfc00) >> 5 | (Word1 & 0xf8) >> 3;
+          data2=(Word1 & 0xf80000) >> 8 | (Word1 & 0xfc00) >> 5 | (Word1 & 0xf8) >> 3;
           wr_dat(data2);
           break;
         case COLOR_18BIT:
@@ -695,7 +695,7 @@ void LGDP4532_PutChar(char c, uint16_t x, uint16_t y) {
           data2=(Word0 & 0xfc0000) >> 6 | (Word0 & 0xfc00) >> 4 | (Word0 & 0xfc) >> 2;
           wr_dat(data1);
           wr_dat(data2);
-				  data1=Word1>>22;
+          data1=Word1>>22;
           data2=(Word1 & 0xfc0000) >> 6 | (Word1 & 0xfc00) >> 4 | (Word1 & 0xfc) >> 2;
           wr_dat(data1);
           wr_dat(data2);
@@ -751,9 +751,9 @@ void LGDP4532_PutStrCEOL(char *pString, uint16_t x, uint16_t y) {
 
     if (x > LGDP4532_GetWidth()-1) break;
   }
-	while(x < LGDP4532_GetWidth()-1) {
-		
-		LGDP4532_PutChar(' ', x, y);
+  while(x < LGDP4532_GetWidth()-1) {
+
+    LGDP4532_PutChar(' ', x, y);
 
     switch(LGDP4532_font_size) {
       case FONT_6x8:
@@ -766,5 +766,5 @@ void LGDP4532_PutStrCEOL(char *pString, uint16_t x, uint16_t y) {
         x+=8;
       break;
     }
-	}
+  }
 }
