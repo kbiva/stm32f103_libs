@@ -279,9 +279,9 @@ int RTC_Init(void) {
     /* Wait until last write operation on RTC registers has finished */
     RTC_WaitForLastTask();
     /* Set initial value */
-    RTC_SetCounter( (uint32_t)((11*60+55)*60) ); // here: 1st January 2000 11:55:00
+//    RTC_SetCounter( (uint32_t)((11*60+55)*60) ); // here: 1st January 2000 11:55:00
     /* Wait until last write operation on RTC registers has finished */
-    RTC_WaitForLastTask();
+//    RTC_WaitForLastTask();
     BKP_WriteBackupRegister(BKP_DR1, BKP_DR1_VALUE);
     /* Lock access to BKP Domain */
     PWR_BackupAccessCmd(DISABLE);
