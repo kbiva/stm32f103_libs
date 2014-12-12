@@ -23,5 +23,6 @@ All libraries depends on lib_STM32F10x_StdPeriph.
 * <b>lib_SD_SDIO</b> - SD SDIO low level API.
 * <b>lib_SSD1289</b> - Solomon Systech SSD1289 LCD library. Depends on lib_delay.
 * <b>lib_STM32F10x_StdPeriph</b> - Standart Peripheral Library for STMF103xx v3.6.1
+* <b>lib_tjpegd</b> - TJpgDec library.
 * <b>lib_touch_XPT2046</b> - XPT2046 touch controller.
 * <b>lib_usart</b> - USART
