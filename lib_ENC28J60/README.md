@@ -15,7 +15,7 @@ Adjustable parameters:
 * CS port and pin
 
 ### Usage example ###
-
+```C
   lan_init(SPI1,GPIOB,GPIO_Pin_7);
   ...	
   while(1) {
@@ -24,3 +24,4 @@ Adjustable parameters:
       BSP_LED_On(LED2);
     }
   }
+```
