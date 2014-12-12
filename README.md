@@ -9,6 +9,7 @@ All libraries depends on lib_STM32F10x_StdPeriph.
 * <b>lib_DS18B20</b> - DS18D20 digital temperature sensor library. Depends on lib_1-Wire.
 * <b>lib_ENC28J60</b> - ENC28J60 ethernet with TCPIP stack library.
 * <b>lib_FatFs</b> - FatFs library. Depends on lib_SD_FatFs.
+* <b>lib_flash</b> - library for onboard 16Mbit SPI flash access.
 * <b>lib_ILI9328</b> - Ilitek ILI9328 LCD library. Depends on lib_delay.
 * <b>lib_HD66773R</b> -Renesas HD66773R LCD library (Samsung E700). Depends on lib_delay.
 * <b>lib_HX8352A</b> - Himax HX8352A LCD library (LG KF700). Depends on lib_delay.
