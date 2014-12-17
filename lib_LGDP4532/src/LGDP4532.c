@@ -11,7 +11,7 @@
 #include "colors.h"
 #include "font6x8.h"
 #include "font8x8.h"
-#include "font8x16.h"
+#include "font8x14.h"
 
 static uint32_t LGDP4532_text_foreground_color=WHITE;
 static uint32_t LGDP4532_text_background_color=BLACK;
@@ -20,7 +20,7 @@ static FONT_SIZE LGDP4532_font_size;
 static unsigned char *FontTable[] = {
     (unsigned char *)FONT6x8,
     (unsigned char *)FONT8x8,
-    (unsigned char *)FONT8x16
+    (unsigned char *)FONT8x14
 };
 
 static COLOR_MODE LGDP4532_color_mode;
@@ -720,7 +720,7 @@ void LGDP4532_PutStr(char *pString, uint16_t x, uint16_t y) {
       case FONT_8x8:
         x+=8;
       break;
-      case FONT_8x16:
+      case FONT_8x14:
         x+=8;
       break;
     }
@@ -744,7 +744,7 @@ void LGDP4532_PutStrCEOL(char *pString, uint16_t x, uint16_t y) {
       case FONT_8x8:
         x+=8;
       break;
-      case FONT_8x16:
+      case FONT_8x14:
         x+=8;
       break;
     }
@@ -762,7 +762,7 @@ void LGDP4532_PutStrCEOL(char *pString, uint16_t x, uint16_t y) {
       case FONT_8x8:
         x+=8;
       break;
-      case FONT_8x16:
+      case FONT_8x14:
         x+=8;
       break;
     }
