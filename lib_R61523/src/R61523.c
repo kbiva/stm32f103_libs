@@ -246,7 +246,7 @@ void R61523_SetPixel(uint16_t x,uint16_t y,uint32_t color) {
 
 void R61523_ClearScreen(uint32_t color) {
 
-  R61523_FillRectangle(START_X,START_Y,END_X,END_Y,color);
+  R61523_FillRectangle(0,0,R61523_GetWidth()-1,R61523_GetHeight()-1,color);
 }
 
 void R61523_FillPixel(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,uint32_t *color) {
