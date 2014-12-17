@@ -193,6 +193,12 @@ enum COMMANDS {
   GAMMA_SET_C             = 0xca
 };
 
+typedef enum _FONT_SIZE {
+  FONT_6x8 = 0,
+  FONT_8x8 = 1,
+  FONT_8x14 = 2
+} FONT_SIZE;
+
 #define LCD_REG16     (*((volatile uint16_t*)0x60000000))
 #define LCD_DAT16     (*((volatile uint16_t*)0x60020000))
 
@@ -214,5 +220,11 @@ void R61523_Wakeup(void);
 
 uint16_t R61523_GetWidth(void);
 uint16_t R61523_GetHeight(void);
+
+void R61523_SetFont(FONT_SIZE font_size);
+void R61523_SetTextColors(uint32_t fColor, uint32_t bColor);
+void R61523_PutChar(char c, uint16_t x, uint16_t y);
+void R61523_PutStr(char *pString, uint16_t x, uint16_t y);
+void R61523_PutStrCEOL(char *pString, uint16_t x, uint16_t y);
 
 #endif

@@ -7,6 +7,20 @@
 #include "stm32f10x_conf.h"
 #include "R61523.h"
 #include "delay.h"
+#include "colors.h"
+#include "font6x8.h"
+#include "font8x8.h"
+#include "font8x14.h"
+
+static uint32_t R61523_text_foreground_color=WHITE;
+static uint32_t R61523_text_background_color=BLACK;
+static FONT_SIZE R61523_font_size;
+
+static unsigned char *FontTable[] = {
+    (unsigned char *)FONT6x8,
+    (unsigned char *)FONT8x8,
+    (unsigned char *)FONT8x14
+};
 
 static COLOR_MODE R61523_color_mode;
 static ORIENTATION_MODE R61523_orientation_mode;
@@ -380,3 +394,129 @@ void R61523_Wakeup(void){
   wr_cmd(DISPLAY_ON);
 }
 
+void R61523_SetFont(FONT_SIZE font_size) {
+
+  R61523_font_size=font_size;
+}
+
+void R61523_SetTextColors(uint32_t fColor, uint32_t bColor) {
+
+  R61523_text_foreground_color = fColor;
+  R61523_text_background_color = bColor;
+}
+
+void R61523_PutChar(char c, uint16_t x, uint16_t y) {
+
+  uint32_t i,j;
+  uint32_t nCols;
+  uint32_t nRows;
+  uint32_t nBytes;
+  uint8_t PixelRow;
+  uint8_t Mask;
+  uint32_t Word0;
+  uint32_t Word1;
+  unsigned char *pFont;
+  unsigned char *pChar;
+  uint16_t data1,data2;
+
+  // get pointer to the beginning of the selected font table
+  pFont = (unsigned char *)FontTable[R61523_font_size];
+
+  // get the nColumns, nRows and nBytes
+  nCols = *pFont;
+  nRows = *(pFont + 1);
+  nBytes = *(pFont + 2);
+
+  // get pointer to the first byte of the desired character
+  pChar = pFont + (nBytes * (c - 0x1F));
+
+  R61523_SetWindow(x,y,x + nCols - 1,y + nRows - 1);
+
+  // loop on each row
+  for (i = 0; i < nRows; i++) {
+
+    // copy pixel row from font table and then decrement row
+    PixelRow = *pChar++;
+
+    // loop on each pixel in the row (left to right)
+    // Note: we do two pixels each loop
+    Mask = 0x80;
+    for (j = 0; j < nCols; j += 2) {
+
+      // if pixel bit set, use foreground color; else use the background color
+      // now get the pixel color for two successive pixels
+      if (PixelRow & Mask)
+        Word0 = R61523_text_foreground_color;
+      else
+        Word0 = R61523_text_background_color;
+      Mask >>= 1;
+
+      if (PixelRow & Mask)
+        Word1 = R61523_text_foreground_color;
+      else
+        Word1 = R61523_text_background_color;
+      Mask >>= 1;
+
+      switch(R61523_color_mode){
+        case COLOR_16BIT:
+          data1=(Word0 & 0xf80000) >> 19 | (Word0 & 0xfc00) >> 5 | (Word0 & 0xf8) << 8;
+          wr_dat(data1);
+          data2=(Word1 & 0xf80000) >> 19 | (Word1 & 0xfc00) >> 5 | (Word1 & 0xf8) << 8;
+          wr_dat(data2);
+          break;
+        case COLOR_18BIT:
+          data1=Word0&0xfc;
+          data2=(Word0 >> 16 | (Word0 & 0xff00)) & 0xfcfc;
+          wr_dat(data1);
+          wr_dat(data2);
+          data1=Word1&0xfc;
+          data2=(Word1 >> 16 | (Word1 & 0xff00)) & 0xfcfc;
+          wr_dat(data1);
+          wr_dat(data2);
+          break;
+        case COLOR_24BIT:
+          data1=Word0&0xff;
+          data2=Word0 >> 16 | (Word0 & 0xff00);
+          wr_dat(data1);
+          wr_dat(data2);
+          data1=Word1&0xff;
+          data2=Word1 >> 16 | (Word1 & 0xff00);
+          wr_dat(data1);
+          wr_dat(data2);
+          break;
+      }
+    }
+  }
+}
+
+void R61523_PutStr(char *pString, uint16_t x, uint16_t y) {
+
+  if(y+FontTable[R61523_font_size][1]>R61523_GetHeight()-1)
+    return;
+
+  // loop until null-terminator is seen
+  while (*pString) {
+    if (x+FontTable[R61523_font_size][0] > R61523_GetWidth()-1) break;
+    // draw the character
+    R61523_PutChar(*pString++, x, y);
+    x+=FontTable[R61523_font_size][0];
+  }
+}
+
+void R61523_PutStrCEOL(char *pString, uint16_t x, uint16_t y) {
+
+  if(y+FontTable[R61523_font_size][1]>R61523_GetHeight()-1)
+    return;
+
+  // loop until null-terminator is seen
+  while (*pString) {
+    if (x+FontTable[R61523_font_size][0] > R61523_GetWidth()-1) break;
+    // draw the character
+    R61523_PutChar(*pString++, x, y);
+    x+=FontTable[R61523_font_size][0];
+  }
+  while(x+FontTable[R61523_font_size][0] < R61523_GetWidth()-1) {
+    R61523_PutChar(' ', x, y);
+    x+=FontTable[R61523_font_size][0];
+  }
+}

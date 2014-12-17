@@ -418,6 +418,21 @@
               <FileType>5</FileType>
               <FilePath>.\inc\R61523.h</FilePath>
             </File>
+            <File>
+              <FileName>font6x8.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\inc\font6x8.h</FilePath>
+            </File>
+            <File>
+              <FileName>font8x8.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\inc\font8x8.h</FilePath>
+            </File>
+            <File>
+              <FileName>font8x14.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\inc\font8x14.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
