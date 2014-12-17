@@ -443,22 +443,13 @@ void HD66773R_PutChar(char c, uint8_t x, uint8_t y) {
 
 void HD66773R_PutStr(char *pString, uint8_t x, uint8_t y) {
 
+  if(y+FontTable[HD66773R_font_size][1]>HD66773R_GetHeight())
+    return;
   // loop until null-terminator is seen
   while (*pString) {
+    if (x+FontTable[HD66773R_font_size][0]>HD66773R_GetWidth()) break;
     // draw the character
     HD66773R_PutChar(*pString++, x, y);
-
-    switch(HD66773R_font_size) {
-      case FONT_6x8:
-        x+=6;
-      break;
-      case FONT_8x8:
-        x+=8;
-      break;
-      case FONT_8x14:
-        x+=8;
-      break;
-    }
-    if (x > HD66773R_GetWidth()-1) break;
+    x+=FontTable[HD66773R_font_size][0];
   }
 }
