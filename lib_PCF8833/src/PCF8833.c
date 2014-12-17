@@ -10,7 +10,7 @@
 #include "delay.h"
 #include "font6x8.h"
 #include "font8x8.h"
-#include "font8x16.h"
+#include "font8x14.h"
 
 static COLOR_MODE PCF8833_color_mode;
 static ACCESS_MODE PCF8833_access_mode;
@@ -39,7 +39,7 @@ static PIN_SPI pins_spi[]={
 static unsigned char *FontTable[] = {
     (unsigned char *)FONT6x8,
     (unsigned char *)FONT8x8,
-    (unsigned char *)FONT8x16
+    (unsigned char *)FONT8x14
   };
 
 static uint8_t buf_in[9];
@@ -494,7 +494,7 @@ void PCF8833_PutStr(char *pString, uint8_t x, uint8_t y) {
       case FONT_8x8:
         x+=8;
       break;
-      case FONT_8x16:
+      case FONT_8x14:
         x+=8;
       break;
     }

@@ -424,14 +424,14 @@
               <FilePath>.\inc\font8x8.h</FilePath>
             </File>
             <File>
-              <FileName>font8x16.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\inc\font8x16.h</FilePath>
-            </File>
-            <File>
               <FileName>PCF8833.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\inc\PCF8833.h</FilePath>
+            </File>
+            <File>
+              <FileName>font8x14.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\inc\font8x14.h</FilePath>
             </File>
           </Files>
         </Group>

@@ -64,7 +64,7 @@ typedef enum _ORIENTATION_MODE {
 typedef enum _FONT_SIZE {
   FONT_6x8 = 0,
   FONT_8x8 = 1,
-  FONT_8x16 = 2
+  FONT_8x14 = 2
 } FONT_SIZE;
 
 #define CS_Pin         GPIO_Pin_4            // CS = PA[4]
