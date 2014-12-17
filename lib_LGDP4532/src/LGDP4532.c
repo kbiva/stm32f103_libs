@@ -707,64 +707,32 @@ void LGDP4532_PutChar(char c, uint16_t x, uint16_t y) {
 
 void LGDP4532_PutStr(char *pString, uint16_t x, uint16_t y) {
 
+  if(y+FontTable[LGDP4532_font_size][1]>LGDP4532_GetHeight())
+    return;
+
   // loop until null-terminator is seen
-  while (*pString)
-  {
+  while (*pString) {
+    if (x+FontTable[LGDP4532_font_size][0]>LGDP4532_GetWidth()) break;
     // draw the character
     LGDP4532_PutChar(*pString++, x, y);
-
-    switch(LGDP4532_font_size) {
-      case FONT_6x8:
-        x+=6;
-      break;
-      case FONT_8x8:
-        x+=8;
-      break;
-      case FONT_8x14:
-        x+=8;
-      break;
-    }
-
-    if (x > LGDP4532_GetWidth()-1) break;
+    x+=FontTable[LGDP4532_font_size][0];
   }
 }
 
 void LGDP4532_PutStrCEOL(char *pString, uint16_t x, uint16_t y) {
 
+  if(y+FontTable[LGDP4532_font_size][1]>LGDP4532_GetHeight())
+    return;
+
   // loop until null-terminator is seen
-  while (*pString)
-  {
+  while (*pString) {
+    if (x+FontTable[LGDP4532_font_size][0]>LGDP4532_GetWidth()) break;
     // draw the character
     LGDP4532_PutChar(*pString++, x, y);
-
-    switch(LGDP4532_font_size) {
-      case FONT_6x8:
-        x+=6;
-      break;
-      case FONT_8x8:
-        x+=8;
-      break;
-      case FONT_8x14:
-        x+=8;
-      break;
-    }
-
-    if (x > LGDP4532_GetWidth()-1) break;
+    x+=FontTable[LGDP4532_font_size][0];
   }
-  while(x < LGDP4532_GetWidth()-1) {
-
+  while(x+FontTable[LGDP4532_font_size][0]<=LGDP4532_GetWidth()) {
     LGDP4532_PutChar(' ', x, y);
-
-    switch(LGDP4532_font_size) {
-      case FONT_6x8:
-        x+=6;
-      break;
-      case FONT_8x8:
-        x+=8;
-      break;
-      case FONT_8x14:
-        x+=8;
-      break;
-    }
+    x+=FontTable[LGDP4532_font_size][0];
   }
 }
