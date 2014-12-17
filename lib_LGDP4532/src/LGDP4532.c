@@ -268,64 +268,7 @@ void LGDP4532_SetPixel(uint16_t x,uint16_t y,uint32_t color) {
 
 void LGDP4532_ClearScreen(uint32_t color) {
 
-  uint32_t i,j;
-  uint16_t dest1,dest2;
-
-  switch(LGDP4532_orientation_mode){
-    case ORIENTATION_LANDSCAPE:
-      wr_reg(HORIZONTALRAMPOSITIONSTART,0);
-      wr_reg(HORIZONTALRAMPOSITIONEND,239);
-      wr_reg(VERTICALRAMPOSITIONSTART,0);
-      wr_reg(VERTICALRAMPOSITIONEND,319);
-      wr_reg(HORIZONTALADDRESS,0);
-      wr_reg(VERTICALADDRESS,319);
-    break;
-    case ORIENTATION_LANDSCAPE_REV:
-      wr_reg(HORIZONTALRAMPOSITIONSTART,0);
-      wr_reg(HORIZONTALRAMPOSITIONEND,239);
-      wr_reg(VERTICALRAMPOSITIONSTART,0);
-      wr_reg(VERTICALRAMPOSITIONEND,319);
-      wr_reg(HORIZONTALADDRESS,239);
-      wr_reg(VERTICALADDRESS,0);
-    break;
-    case ORIENTATION_PORTRAIT:
-      wr_reg(HORIZONTALRAMPOSITIONSTART,0);
-      wr_reg(HORIZONTALRAMPOSITIONEND,239);
-      wr_reg(VERTICALRAMPOSITIONSTART,0);
-      wr_reg(VERTICALRAMPOSITIONEND,319);
-      wr_reg(HORIZONTALADDRESS,0);
-      wr_reg(VERTICALADDRESS,0);
-    break;
-    case ORIENTATION_PORTRAIT_REV:
-      wr_reg(HORIZONTALRAMPOSITIONSTART,0);
-      wr_reg(HORIZONTALRAMPOSITIONEND,239);
-      wr_reg(VERTICALRAMPOSITIONSTART,0);
-      wr_reg(VERTICALRAMPOSITIONEND,319);
-      wr_reg(HORIZONTALADDRESS,239);
-      wr_reg(VERTICALADDRESS,319);
-    break;
-  }
-
-  wr_cmd(GRAMSTARTWRITING);
-
-  j=240*320;
-
-  switch(LGDP4532_color_mode){
-    case COLOR_16BIT:
-      dest1=(color & 0xf80000) >> 8 | (color & 0xfc00) >> 5 | (color & 0xf8) >> 3;
-      for(i=0;i<j;i++) {
-        wr_dat(dest1);
-      }
-    break;
-    case COLOR_18BIT:
-      dest1=color>>22;
-      dest2=(color & 0xfc0000) >> 6 | (color & 0xfc00) >> 4 | (color & 0xfc) >> 2;
-      for(i=0;i<j;i++) {
-        wr_dat(dest1);
-        wr_dat(dest2);
-      }
-    break;
-  }
+  LGDP4532_FillRectangle(0,0,LGDP4532_GetWidth()-1,LGDP4532_GetHeight()-1,color);
 }
 
 void LGDP4532_FillRectangle(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,uint32_t color) {
@@ -333,42 +276,8 @@ void LGDP4532_FillRectangle(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,uint
   uint32_t i,j;
   uint16_t dest1,dest2;
 
-  switch(LGDP4532_orientation_mode){
-    case ORIENTATION_LANDSCAPE:
-      wr_reg(HORIZONTALRAMPOSITIONSTART,y0);
-      wr_reg(HORIZONTALRAMPOSITIONEND,y1);
-      wr_reg(VERTICALRAMPOSITIONSTART,319-x1);
-      wr_reg(VERTICALRAMPOSITIONEND,319-x0);
-      wr_reg(HORIZONTALADDRESS,y0);
-      wr_reg(VERTICALADDRESS,319-x0);
-    break;
-    case ORIENTATION_LANDSCAPE_REV:
-      wr_reg(HORIZONTALRAMPOSITIONSTART,239-y1);
-      wr_reg(HORIZONTALRAMPOSITIONEND,239-y0);
-      wr_reg(VERTICALRAMPOSITIONSTART,x0);
-      wr_reg(VERTICALRAMPOSITIONEND,x1);
-      wr_reg(HORIZONTALADDRESS,239-y0);
-      wr_reg(VERTICALADDRESS,x0);
-    break;
-    case ORIENTATION_PORTRAIT:
-      wr_reg(HORIZONTALRAMPOSITIONSTART,x0);
-      wr_reg(HORIZONTALRAMPOSITIONEND,x1);
-      wr_reg(VERTICALRAMPOSITIONSTART,y0);
-      wr_reg(VERTICALRAMPOSITIONEND,y1);
-      wr_reg(HORIZONTALADDRESS,x0);
-      wr_reg(VERTICALADDRESS,y0);
-    break;
-    case ORIENTATION_PORTRAIT_REV:
-      wr_reg(HORIZONTALRAMPOSITIONSTART,239-x1);
-      wr_reg(HORIZONTALRAMPOSITIONEND,239-x0);
-      wr_reg(VERTICALRAMPOSITIONSTART,319-y1);
-      wr_reg(VERTICALRAMPOSITIONEND,319-y0);
-      wr_reg(HORIZONTALADDRESS,239-x0);
-      wr_reg(VERTICALADDRESS,319-y0);
-    break;
-  }
+  LGDP4532_SetWindow(x0,y0,x1,y1);
 
-  wr_cmd(GRAMSTARTWRITING);
   j=(x1-x0+1)*(y1-y0+1);
 
   switch(LGDP4532_color_mode){
@@ -394,42 +303,8 @@ void LGDP4532_FillPixel(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,uint32_t
   uint32_t i,j;
   uint16_t dest1,dest2;
 
-  switch(LGDP4532_orientation_mode){
-    case ORIENTATION_LANDSCAPE:
-      wr_reg(HORIZONTALRAMPOSITIONSTART,y0);
-      wr_reg(HORIZONTALRAMPOSITIONEND,y1);
-      wr_reg(VERTICALRAMPOSITIONSTART,319-x1);
-      wr_reg(VERTICALRAMPOSITIONEND,319-x0);
-      wr_reg(HORIZONTALADDRESS,y0);
-      wr_reg(VERTICALADDRESS,319-x0);
-    break;
-    case ORIENTATION_LANDSCAPE_REV:
-      wr_reg(HORIZONTALRAMPOSITIONSTART,239-y1);
-      wr_reg(HORIZONTALRAMPOSITIONEND,239-y0);
-      wr_reg(VERTICALRAMPOSITIONSTART,x0);
-      wr_reg(VERTICALRAMPOSITIONEND,x1);
-      wr_reg(HORIZONTALADDRESS,239-y0);
-      wr_reg(VERTICALADDRESS,x0);
-    break;
-    case ORIENTATION_PORTRAIT:
-      wr_reg(HORIZONTALRAMPOSITIONSTART,x0);
-      wr_reg(HORIZONTALRAMPOSITIONEND,x1);
-      wr_reg(VERTICALRAMPOSITIONSTART,y0);
-      wr_reg(VERTICALRAMPOSITIONEND,y1);
-      wr_reg(HORIZONTALADDRESS,x0);
-      wr_reg(VERTICALADDRESS,y0);
-    break;
-    case ORIENTATION_PORTRAIT_REV:
-      wr_reg(HORIZONTALRAMPOSITIONSTART,239-x1);
-      wr_reg(HORIZONTALRAMPOSITIONEND,239-x0);
-      wr_reg(VERTICALRAMPOSITIONSTART,319-y1);
-      wr_reg(VERTICALRAMPOSITIONEND,319-y0);
-      wr_reg(HORIZONTALADDRESS,239-x0);
-      wr_reg(VERTICALADDRESS,319-y0);
-    break;
-  }
+  LGDP4532_SetWindow(x0,y0,x1,y1);
 
-  wr_cmd(GRAMSTARTWRITING);
   j=(x1-x0+1)*(y1-y0+1);
 
   switch(LGDP4532_color_mode){
@@ -454,48 +329,13 @@ void LGDP4532_FillPixel_16bit(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,ui
 
   uint32_t i,j;
 
-  switch(LGDP4532_orientation_mode){
-    case ORIENTATION_LANDSCAPE:
-      wr_reg(HORIZONTALRAMPOSITIONSTART,y0);
-      wr_reg(HORIZONTALRAMPOSITIONEND,y1);
-      wr_reg(VERTICALRAMPOSITIONSTART,319-x1);
-      wr_reg(VERTICALRAMPOSITIONEND,319-x0);
-      wr_reg(HORIZONTALADDRESS,y0);
-      wr_reg(VERTICALADDRESS,319-x0);
-    break;
-    case ORIENTATION_LANDSCAPE_REV:
-      wr_reg(HORIZONTALRAMPOSITIONSTART,239-y1);
-      wr_reg(HORIZONTALRAMPOSITIONEND,239-y0);
-      wr_reg(VERTICALRAMPOSITIONSTART,x0);
-      wr_reg(VERTICALRAMPOSITIONEND,x1);
-      wr_reg(HORIZONTALADDRESS,239-y0);
-      wr_reg(VERTICALADDRESS,x0);
-    break;
-    case ORIENTATION_PORTRAIT:
-      wr_reg(HORIZONTALRAMPOSITIONSTART,x0);
-      wr_reg(HORIZONTALRAMPOSITIONEND,x1);
-      wr_reg(VERTICALRAMPOSITIONSTART,y0);
-      wr_reg(VERTICALRAMPOSITIONEND,y1);
-      wr_reg(HORIZONTALADDRESS,x0);
-      wr_reg(VERTICALADDRESS,y0);
-    break;
-    case ORIENTATION_PORTRAIT_REV:
-      wr_reg(HORIZONTALRAMPOSITIONSTART,239-x1);
-      wr_reg(HORIZONTALRAMPOSITIONEND,239-x0);
-      wr_reg(VERTICALRAMPOSITIONSTART,319-y1);
-      wr_reg(VERTICALRAMPOSITIONEND,319-y0);
-      wr_reg(HORIZONTALADDRESS,239-x0);
-      wr_reg(VERTICALADDRESS,319-y0);
-    break;
-  }
+  LGDP4532_SetWindow(x0,y0,x1,y1);
 
-  wr_cmd(GRAMSTARTWRITING);
   j=(x1-x0+1)*(y1-y0+1);
   for(i=0;i<j;i++) {
     wr_dat(color[i]);
   }
 }
-
 
 void LGDP4532_SetScrollPosition(uint16_t pos) {
   wr_reg(GATESCANCONTROLSCROLL,pos);
