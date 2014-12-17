@@ -491,12 +491,12 @@ void R61523_PutChar(char c, uint16_t x, uint16_t y) {
 
 void R61523_PutStr(char *pString, uint16_t x, uint16_t y) {
 
-  if(y+FontTable[R61523_font_size][1]>R61523_GetHeight()-1)
+  if(y+FontTable[R61523_font_size][1]>R61523_GetHeight())
     return;
 
   // loop until null-terminator is seen
   while (*pString) {
-    if (x+FontTable[R61523_font_size][0] > R61523_GetWidth()-1) break;
+    if (x+FontTable[R61523_font_size][0]>R61523_GetWidth()) break;
     // draw the character
     R61523_PutChar(*pString++, x, y);
     x+=FontTable[R61523_font_size][0];
@@ -505,17 +505,17 @@ void R61523_PutStr(char *pString, uint16_t x, uint16_t y) {
 
 void R61523_PutStrCEOL(char *pString, uint16_t x, uint16_t y) {
 
-  if(y+FontTable[R61523_font_size][1]>R61523_GetHeight()-1)
+  if(y+FontTable[R61523_font_size][1]>R61523_GetHeight())
     return;
 
   // loop until null-terminator is seen
   while (*pString) {
-    if (x+FontTable[R61523_font_size][0] > R61523_GetWidth()-1) break;
+    if (x+FontTable[R61523_font_size][0]>R61523_GetWidth()) break;
     // draw the character
     R61523_PutChar(*pString++, x, y);
     x+=FontTable[R61523_font_size][0];
   }
-  while(x+FontTable[R61523_font_size][0] < R61523_GetWidth()-1) {
+  while(x+FontTable[R61523_font_size][0]<=R61523_GetWidth()) {
     R61523_PutChar(' ', x, y);
     x+=FontTable[R61523_font_size][0];
   }
