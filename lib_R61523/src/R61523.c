@@ -352,34 +352,16 @@ uint16_t R61523_GetHeight(void) {
 
 void R61523_SetWindow(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1) {
 
- switch(R61523_orientation_mode){
-    case ORIENTATION_LANDSCAPE:
-    case ORIENTATION_LANDSCAPE_REV:
-      wr_cmd(SET_COLUMN_ADDRESS);
-      wr_dat(x0>>8);
-      wr_dat(x0&0xff);
-      wr_dat(x1>>8);
-      wr_dat(x1&0xff);
-      wr_cmd(SET_PAGE_ADDRESS);
-      wr_dat(y0>>8);
-      wr_dat(y0&0xff);
-      wr_dat(y1>>8);
-      wr_dat(y1&0xff);
-      break;
-    case ORIENTATION_PORTRAIT:
-    case ORIENTATION_PORTRAIT_REV:
-      wr_cmd(SET_COLUMN_ADDRESS);
-      wr_dat(y0>>8);
-      wr_dat(y0&0xff);
-      wr_dat(y1>>8);
-      wr_dat(y1&0xff);
-      wr_cmd(SET_PAGE_ADDRESS);
-      wr_dat(x0>>8);
-      wr_dat(x0&0xff);
-      wr_dat(x1>>8);
-      wr_dat(x1&0xff);
-    break;
-  }
+  wr_cmd(SET_COLUMN_ADDRESS);
+  wr_dat(x0>>8);
+  wr_dat(x0&0xff);
+  wr_dat(x1>>8);
+  wr_dat(x1&0xff);
+  wr_cmd(SET_PAGE_ADDRESS);
+  wr_dat(y0>>8);
+  wr_dat(y0&0xff);
+  wr_dat(y1>>8);
+  wr_dat(y1&0xff);
   wr_cmd(MEMORY_WRITE);
 }
 
