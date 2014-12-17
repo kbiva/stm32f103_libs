@@ -405,24 +405,14 @@ void S6B33BG_PutChar(char c, uint8_t x, uint8_t y) {
 
 void S6B33BG_PutStr(char *pString, uint8_t x, uint8_t y) {
 
+  if(y+FontTable[S6B33BG_font_size][1]>S6B33BG_GetHeight())
+    return;
+
   // loop until null-terminator is seen
-  while (*pString)
-  {
+  while (*pString) {
+    if (x+FontTable[S6B33BG_font_size][0]>S6B33BG_GetWidth()) break;
     // draw the character
     S6B33BG_PutChar(*pString++, x, y);
-
-    switch(S6B33BG_font_size) {
-      case FONT_6x8:
-        x+=6;
-      break;
-      case FONT_8x8:
-        x+=8;
-      break;
-      case FONT_8x14:
-        x+=8;
-      break;
-    }
-    // bail out if y exceeds 131
-    if (x > S6B33BG_GetWidth()-1) break;
+    x+=FontTable[S6B33BG_font_size][0];
   }
 }
