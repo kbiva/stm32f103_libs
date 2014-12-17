@@ -11,7 +11,7 @@
 #include "delay.h"
 #include "font6x8.h"
 #include "font8x8.h"
-#include "font8x16.h"
+#include "font8x14.h"
 
 static FONT_SIZE HD66773R_font_size;
 static uint32_t HD66773R_text_foreground_color=WHITE;
@@ -22,7 +22,7 @@ static ORIENTATION_MODE HD66773R_orientation_mode;
 static unsigned char *FontTable[] = {
     (unsigned char *)FONT6x8,
     (unsigned char *)FONT8x8,
-    (unsigned char *)FONT8x16
+    (unsigned char *)FONT8x14
 };
 
 static PIN pins[]={
@@ -455,7 +455,7 @@ void HD66773R_PutStr(char *pString, uint8_t x, uint8_t y) {
       case FONT_8x8:
         x+=8;
       break;
-      case FONT_8x16:
+      case FONT_8x14:
         x+=8;
       break;
     }

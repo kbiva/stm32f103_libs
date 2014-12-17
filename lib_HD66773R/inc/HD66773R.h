@@ -190,7 +190,7 @@ typedef enum _COMMANDS {
 typedef enum _FONT_SIZE {
   FONT_6x8 = 0,
   FONT_8x8 = 1,
-  FONT_8x16 = 2
+  FONT_8x14 = 2
 } FONT_SIZE;
 
 #define LCD_REG16     (*((volatile uint16_t*)0x60000000))
