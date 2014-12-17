@@ -481,25 +481,15 @@ void PCF8833_PutChar(char c, uint8_t x, uint8_t y) {
 
 void PCF8833_PutStr(char *pString, uint8_t x, uint8_t y) {
 
+  if(y+FontTable[PCF8833_font_size][1]>PCF8833_GetHeight()-1)
+    return;
+
   // loop until null-terminator is seen
-  while (*pString)
-  {
+  while (*pString) {
+    if (x+FontTable[PCF8833_font_size][0]>PCF8833_GetWidth()-1) break;
     // draw the character
     PCF8833_PutChar(*pString++, x, y);
-
-    switch(PCF8833_font_size) {
-      case FONT_6x8:
-        x+=6;
-      break;
-      case FONT_8x8:
-        x+=8;
-      break;
-      case FONT_8x14:
-        x+=8;
-      break;
-    }
-    // bail out if y exceeds 131
-    if (x > 131) break;
+    x+=FontTable[PCF8833_font_size][0];
   }
 }
 
