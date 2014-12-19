@@ -14,11 +14,11 @@ FILE __stdout;
 FILE __stdin;
 
 void USART1_Init(uint32_t baud) {
+	
   GPIO_InitTypeDef GPIO_InitStructure;
   USART_InitTypeDef USART_InitStructure;
 
-  RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1 | RCC_APB2Periph_AFIO |
-                         USART1_PIN_TX_Bus | USART1_PIN_RX_Bus, ENABLE );
+  RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1 | USART1_PIN_TX_Bus | USART1_PIN_RX_Bus, ENABLE );
 
   //Set USART1 Tx (PA.09) as AF push-pull
   GPIO_InitStructure.GPIO_Pin = USART1_PIN_TX;
@@ -46,10 +46,11 @@ void USART1_Init(uint32_t baud) {
 }
 
 void USART2_Init(uint32_t baud) {
+	
   GPIO_InitTypeDef GPIO_InitStructure;
   USART_InitTypeDef USART_InitStructure;
 
-  RCC_APB2PeriphClockCmd(USART2_PIN_TX_Bus | USART2_PIN_RX_Bus , ENABLE);
+  RCC_APB2PeriphClockCmd(USART2_PIN_TX_Bus | USART2_PIN_RX_Bus, ENABLE);
   RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
 
   //Set USART2 Tx (PA.02) as AF push-pull
@@ -78,18 +79,20 @@ void USART2_Init(uint32_t baud) {
 }
 
 int SendChar (int ch) {
+	
   while (!(USART2->SR & USART_FLAG_TXE)){};
   USART2->DR = (ch & 0xFF);
   return (ch);
 }
 
 int GetChar (void) {
+	
   while (!(USART2->SR & USART_FLAG_RXNE)){};
   return ((int)(USART2->DR & 0xFF));
 }
 
-int fputc(int ch, FILE *f)
-{
+int fputc(int ch, FILE *f) {
+	
   //USART_SendData(USART2, (uint8_t) ch);
   USART2->DR = (ch & (uint16_t)0x01FF);
   //while (USART_GetFlagStatus(USART2, USART_FLAG_TXE) == RESET);
@@ -98,6 +101,7 @@ int fputc(int ch, FILE *f)
 }
 
 int fgetc(FILE *f) {
+	
   while (!(USART2->SR & USART_FLAG_RXNE)){};
   return ((int)(USART2->DR & 0xFF));
   //return (GetChar());
