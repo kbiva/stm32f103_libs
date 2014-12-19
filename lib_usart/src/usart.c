@@ -49,7 +49,7 @@ void USART2_Init(uint32_t baud) {
   GPIO_InitTypeDef GPIO_InitStructure;
   USART_InitTypeDef USART_InitStructure;
 
-  RCC_APB2PeriphClockCmd(USART2_PIN_TX_Bus | USART2_PIN_RX_Bus | RCC_APB2Periph_AFIO, ENABLE);
+  RCC_APB2PeriphClockCmd(USART2_PIN_TX_Bus | USART2_PIN_RX_Bus , ENABLE);
   RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
 
   //Set USART2 Tx (PA.02) as AF push-pull
