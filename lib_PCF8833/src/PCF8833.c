@@ -28,13 +28,12 @@ static PIN pins_bb[]={
   {{RST_Pin,RST_Speed,RST_Mode},RST_Port,RST_Bus},
 };
 
-static PIN_SPI pins_spi[]={
-  {{CS_Pin, CS_Speed, CS_Mode_SPI}, CS_Port, CS_Bus, CS_AFIO_Bus},
-  {{SCLK_Pin,SCLK_Speed,SCLK_Mode_SPI},SCLK_Port,SCLK_Bus, SCLK_AFIO_Bus},
-  {{SDATA_Pin,SDATA_Speed,SDATA_Mode_SPI},SDATA_Port,SDATA_Bus, SDATA_AFIO_Bus},
+static PIN pins_spi[]={
+  {{CS_Pin, CS_Speed, CS_Mode_SPI}, CS_Port, CS_Bus},
+  {{SCLK_Pin,SCLK_Speed,SCLK_Mode_SPI},SCLK_Port,SCLK_Bus},
+  {{SDATA_Pin,SDATA_Speed,SDATA_Mode_SPI},SDATA_Port,SDATA_Bus},
   {{RST_Pin,RST_Speed,RST_Mode},RST_Port,RST_Bus},
 };
-
 
 static unsigned char *FontTable[] = {
     (unsigned char *)FONT6x8,
@@ -189,10 +188,8 @@ static void PCF8833_GPIO_SPI_Config(void) {
 
   SPI_InitTypeDef  SPI_InitStructure;
 
-  for(i=0;i<sizeof(pins_spi)/sizeof(PIN_SPI);i++) {
+  for(i=0;i<sizeof(pins_spi)/sizeof(PIN);i++) {
     RCC_APB2PeriphClockCmd(pins_spi[i].GPIO_Bus,ENABLE);
-    if(pins_spi[i].AFIO_Bus)
-      RCC_APB2PeriphClockCmd(pins_spi[i].AFIO_Bus,ENABLE);
     GPIO_Init(pins_spi[i].GPIOx,&pins_spi[i].GPIO_InitStructure);
   }
 

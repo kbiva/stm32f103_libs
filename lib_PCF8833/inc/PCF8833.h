@@ -73,7 +73,6 @@ typedef enum _FONT_SIZE {
 #define CS_Mode_SPI    GPIO_Mode_AF_PP
 #define CS_Port        GPIOA
 #define CS_Bus         RCC_APB2Periph_GPIOA
-#define CS_AFIO_Bus    RCC_APB2Periph_AFIO
 
 #define SCLK_Pin       GPIO_Pin_5            // SCLK = PA[5]
 #define SCLK_Speed     GPIO_Speed_50MHz
@@ -81,7 +80,6 @@ typedef enum _FONT_SIZE {
 #define SCLK_Mode_SPI  GPIO_Mode_AF_PP
 #define SCLK_Port      GPIOA
 #define SCLK_Bus       RCC_APB2Periph_GPIOA
-#define SCLK_AFIO_Bus  RCC_APB2Periph_AFIO
 
 #define SDATA_Pin      GPIO_Pin_7            // SDATA = PA[7]
 #define SDATA_Speed    GPIO_Speed_50MHz
@@ -89,7 +87,6 @@ typedef enum _FONT_SIZE {
 #define SDATA_Mode_SPI GPIO_Mode_AF_PP
 #define SDATA_Port     GPIOA
 #define SDATA_Bus      RCC_APB2Periph_GPIOA
-#define SDATA_AFIO_Bus RCC_APB2Periph_AFIO
 
 #define RST_Pin        GPIO_Pin_7            // RESET = PB[7]
 #define RST_Speed      GPIO_Speed_50MHz
@@ -102,13 +99,6 @@ typedef struct _PIN {
   GPIO_TypeDef* GPIOx;
   uint32_t GPIO_Bus;
 } PIN;
-
-typedef struct _PIN_SPI {
-  GPIO_InitTypeDef GPIO_InitStructure;
-  GPIO_TypeDef* GPIOx;
-  uint32_t GPIO_Bus;
-  uint32_t AFIO_Bus;
-} PIN_SPI;
 
 // *************************************************************************************
 // LCD Include File for Philips PCF8833 STN RGB- 132x132x3 Driver
