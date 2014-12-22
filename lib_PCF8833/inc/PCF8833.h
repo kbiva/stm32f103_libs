@@ -26,79 +26,112 @@
 // 16bit RGB 5:6:5 (native)
 
 
-typedef enum _COLOR_MODE {
-  COLOR_8BIT = 0x02,
-  COLOR_12BIT = 0x03,
-  COLOR_16BIT = 0x05
-} COLOR_MODE;
+typedef enum _PCF8833_COLOR_MODE {
+  PCF8833_COLOR_8BIT = 0x02,
+  PCF8833_COLOR_12BIT = 0x03,
+  PCF8833_COLOR_16BIT = 0x05
+} PCF8833_COLOR_MODE;
 
-typedef enum _RBG_MODE {
-  MODE_RGB = 0x00,
-  MODE_BGR = 0x08,
-} RGB_MODE;
+typedef enum _PCF8833_RBG_MODE {
+  PCF8833_MODE_RGB = 0x00,
+  PCF8833_MODE_BGR = 0x08,
+} PCF8833_RGB_MODE;
 
-typedef enum _ACCESS_MODE {
-  ACCESS_BITBANG = 1,
-  ACCESS_SPI9BITS
-} ACCESS_MODE;
+typedef enum _PCF8833_ACCESS_MODE {
+  PCF8833_ACCESS_BITBANG = 1,
+  PCF8833_ACCESS_SPI9BITS
+} PCF8833_ACCESS_MODE;
 
-typedef enum _DISPLAY_INVERSION {
-  DISPLAY_INVERSION_ON = 0x21,
-  DISPLAY_INVERSION_OFF = 0x20
-} DISPLAY_INVERSION;
+typedef enum _PCF8833_DISPLAY_INVERSION {
+  PCF8833_DISPLAY_INVERSION_ON = 0x21,
+  PCF8833_DISPLAY_INVERSION_OFF = 0x20
+} PCF8833_DISPLAY_INVERSION;
 
 
-typedef enum _ORIENTATION_MODE {
+typedef enum _PCF8833_ORIENTATION_MODE {
   // for 3100,6100,6030
-  ORIENTATION_PORTRAIT =       0xE0,
-  ORIENTATION_LANDSCAPE =      0x40,
-  ORIENTATION_PORTRAIT_REV =   0x20,
-  ORIENTATION_LANDSCAPE_REV =  0x80,
+  PCF8833_ORIENTATION_PORTRAIT =       0xE0,
+  PCF8833_ORIENTATION_LANDSCAPE =      0x40,
+  PCF8833_ORIENTATION_PORTRAIT_REV =   0x20,
+  PCF8833_ORIENTATION_LANDSCAPE_REV =  0x80,
   // for 6020
-  ORIENTATION_PORTRAIT1 =      0xA0,
-  ORIENTATION_LANDSCAPE1 =     0x00,
-  ORIENTATION_PORTRAIT1_REV =  0x60,
-  ORIENTATION_LANDSCAPE1_REV = 0xC0
-} ORIENTATION_MODE;
+  PCF8833_ORIENTATION_PORTRAIT1 =      0xA0,
+  PCF8833_ORIENTATION_LANDSCAPE1 =     0x00,
+  PCF8833_ORIENTATION_PORTRAIT1_REV =  0x60,
+  PCF8833_ORIENTATION_LANDSCAPE1_REV = 0xC0
+} PCF8833_ORIENTATION_MODE;
 
-typedef enum _FONT_SIZE {
-  FONT_6x8 = 0,
-  FONT_8x8 = 1,
-  FONT_8x14 = 2
-} FONT_SIZE;
+typedef enum _PCF8833_FONT_SIZE {
+  PCF8833_FONT_6x8 = 0,
+  PCF8833_FONT_8x8 = 1,
+  PCF8833_FONT_8x14 = 2
+} PCF8833_FONT_SIZE;
 
-#define CS_Pin         GPIO_Pin_4            // CS = PA[4]
-#define CS_Speed       GPIO_Speed_50MHz
-#define CS_Mode_BB     GPIO_Mode_Out_PP
-#define CS_Mode_SPI    GPIO_Mode_AF_PP
-#define CS_Port        GPIOA
-#define CS_Bus         RCC_APB2Periph_GPIOA
+// SPI1 on ABP2 bus
+#define PCF8833_SPI             SPI1
+#define PCF8833_SPI_Bus_Enable  RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE)
+#define PCF8833_SPI_Bus_Disable RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, DISABLE)
 
-#define SCLK_Pin       GPIO_Pin_5            // SCLK = PA[5]
-#define SCLK_Speed     GPIO_Speed_50MHz
-#define SCLK_Mode_BB   GPIO_Mode_Out_PP
-#define SCLK_Mode_SPI  GPIO_Mode_AF_PP
-#define SCLK_Port      GPIOA
-#define SCLK_Bus       RCC_APB2Periph_GPIOA
+#define PCF8833_CS_Pin         GPIO_Pin_4            // CS = PA[4]
+#define PCF8833_CS_Speed       GPIO_Speed_50MHz
+#define PCF8833_CS_Mode_BB     GPIO_Mode_Out_PP
+#define PCF8833_CS_Mode_SPI    GPIO_Mode_AF_PP
+#define PCF8833_CS_Port        GPIOA
+#define PCF8833_CS_Bus         RCC_APB2Periph_GPIOA
 
-#define SDATA_Pin      GPIO_Pin_7            // SDATA = PA[7]
-#define SDATA_Speed    GPIO_Speed_50MHz
-#define SDATA_Mode_BB  GPIO_Mode_Out_PP
-#define SDATA_Mode_SPI GPIO_Mode_AF_PP
-#define SDATA_Port     GPIOA
-#define SDATA_Bus      RCC_APB2Periph_GPIOA
+#define PCF8833_SCLK_Pin       GPIO_Pin_5            // SCLK = PA[5]
+#define PCF8833_SCLK_Speed     GPIO_Speed_50MHz
+#define PCF8833_SCLK_Mode_BB   GPIO_Mode_Out_PP
+#define PCF8833_SCLK_Mode_SPI  GPIO_Mode_AF_PP
+#define PCF8833_SCLK_Port      GPIOA
+#define PCF8833_SCLK_Bus       RCC_APB2Periph_GPIOA
 
-#define RST_Pin        GPIO_Pin_7            // RESET = PB[7]
-#define RST_Speed      GPIO_Speed_50MHz
-#define RST_Mode       GPIO_Mode_Out_PP
-#define RST_Port       GPIOB
-#define RST_Bus        RCC_APB2Periph_GPIOB
+#define PCF8833_SDATA_Pin      GPIO_Pin_7            // SDATA = PA[7]
+#define PCF8833_SDATA_Speed    GPIO_Speed_50MHz
+#define PCF8833_SDATA_Mode_BB  GPIO_Mode_Out_PP
+#define PCF8833_SDATA_Mode_SPI GPIO_Mode_AF_PP
+#define PCF8833_SDATA_Port     GPIOA
+#define PCF8833_SDATA_Bus      RCC_APB2Periph_GPIOA
 
-typedef struct _PIN {
+/*
+// SPI2 on ABP1 bus
+#define PCF8833_SPI             SPI2
+#define PCF8833_SPI_Bus_Enable  RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI2, ENABLE)
+#define PCF8833_SPI_Bus_Disable RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI2, DISABLE)
+
+#define PCF8833_CS_Pin         GPIO_Pin_12            // CS = PB[12]
+#define PCF8833_CS_Speed       GPIO_Speed_50MHz
+#define PCF8833_CS_Mode_BB     GPIO_Mode_Out_PP
+#define PCF8833_CS_Mode_SPI    GPIO_Mode_AF_PP
+#define PCF8833_CS_Port        GPIOB
+#define PCF8833_CS_Bus         RCC_APB2Periph_GPIOB
+
+#define PCF8833_SCLK_Pin       GPIO_Pin_13            // SCLK = PB[13]
+#define PCF8833_SCLK_Speed     GPIO_Speed_50MHz
+#define PCF8833_SCLK_Mode_BB   GPIO_Mode_Out_PP
+#define PCF8833_SCLK_Mode_SPI  GPIO_Mode_AF_PP
+#define PCF8833_SCLK_Port      GPIOB
+#define PCF8833_SCLK_Bus       RCC_APB2Periph_GPIOB
+
+#define PCF8833_SDATA_Pin      GPIO_Pin_15            // SDATA = PB[15]
+#define PCF8833_SDATA_Speed    GPIO_Speed_50MHz
+#define PCF8833_SDATA_Mode_BB  GPIO_Mode_Out_PP
+#define PCF8833_SDATA_Mode_SPI GPIO_Mode_AF_PP
+#define PCF8833_SDATA_Port     GPIOB
+#define PCF8833_SDATA_Bus      RCC_APB2Periph_GPIOB
+*/
+
+#define PCF8833_RST_Pin        GPIO_Pin_7            // RESET = PB[7]
+#define PCF8833_RST_Speed      GPIO_Speed_50MHz
+#define PCF8833_RST_Mode       GPIO_Mode_Out_PP
+#define PCF8833_RST_Port       GPIOB
+#define PCF8833_RST_Bus        RCC_APB2Periph_GPIOB
+
+typedef struct _PCF8833_PIN {
   GPIO_InitTypeDef GPIO_InitStructure;
   GPIO_TypeDef* GPIOx;
   uint32_t GPIO_Bus;
-} PIN;
+} PCF8833_PIN;
 
 // *************************************************************************************
 // LCD Include File for Philips PCF8833 STN RGB- 132x132x3 Driver
@@ -107,60 +140,61 @@ typedef struct _PIN {
 // *************************************************************************************
 // Philips PCF8833 LCD controller command codes
 
-#define NOP      0x00 // nop
-#define SWRESET  0x01  // software reset
-#define BSTROFF  0x02  // booster voltage OFF
-#define BSTRON   0x03  // booster voltage ON
-#define RDDIDIF  0x04  // read display identification
-#define RDDST    0x09  // read display status
-#define SLEEPIN  0x10  // sleep in
-#define SLEEPOUT 0x11 // sleep out
-#define PTLON    0x12 // partial display mode
-#define NORON    0x13 // display normal mode
-#define INVOFF   0x20 // inversion OFF
-#define INVON    0x21 // inversion ON
-#define DALO     0x22 // all pixel OFF
-#define DAL      0x23 // all pixel ON
-#define SETCON   0x25 // write contrast
-#define DISPOFF  0x28 // display OFF
-#define DISPON   0x29 // display ON
-#define CASET    0x2A // column address set
-#define PASET    0x2B // page address set
-#define RAMWR    0x2C // memory write
-#define RGBSET   0x2D // colour set
-#define PTLAR    0x30 // partial area
-#define VSCRDEF  0x33 // vertical scrolling definition
-#define TEOFF    0x34 // test mode
-#define TEON     0x35 // test mode
-#define MADCTL   0x36 // memory access control
-#define SEP      0x37 // vertical scrolling start address
-#define IDMOFF   0x38 // idle mode OFF
-#define IDMON    0x39  // idle mode ON
-#define COLMOD   0x3A  // interface pixel format
-#define SETVOP   0xB0  // set Vop
-#define BRSOFF   0xB4 // bottom row swap
-#define BRSON    0xB5 // bottom row swap
-#define TRSOFF   0xB6 // top row swap
-#define TRSON    0xB7 // top row swap
-#define FINVOFF  0xB8  // display control
-#define DISCTR   0xB9  // display control
-#define DOROFF   0xBA // data order
-#define DORON    0xBB // data order
-#define TCDFE    0xBD // enable/disable DF temperature compensation
-#define TCVOPE   0xBF // enable/disable Vop temp comp
-#define EC       0xC0 // internal or external oscillator
-#define SETMUL   0xC2  // set multiplication factor
-#define TCVOPAB  0xC3  // set TCVOP slopes A and B
-#define TCVOPCD  0xC4  // set TCVOP slopes c and d
-#define TCDF     0xC5  // set divider frequency
-#define DF8COLOR 0xC6 // set divider frequency 8-color mode
-#define SETBS    0xC7  // set bias system
-#define RDTEMP   0xC8  // temperature read back
-#define NLI      0xC9 // n-line inversion
-#define RDID1    0xDA // read ID1
-#define RDID2    0xDB // read ID2
-#define RDID3    0xDC // read ID3
-
+typedef enum _PCF8833_COMMANDS {
+  PCF8833_NOP =      0x00,// nop
+  PCF8833_SWRESET =  0x01,// software reset
+  PCF8833_BSTROFF =  0x02,// booster voltage OFF
+  PCF8833_BSTRON =   0x03,// booster voltage ON
+  PCF8833_RDDIDIF =  0x04,// read display identification
+  PCF8833_RDDST =    0x09,// read display status
+  PCF8833_SLEEPIN =  0x10,// sleep in
+  PCF8833_SLEEPOUT = 0x11,// sleep out
+  PCF8833_PTLON =    0x12,// partial display mode
+  PCF8833_NORON =    0x13,// display normal mode
+  PCF8833_INVOFF =   0x20,// inversion OFF
+  PCF8833_INVON =    0x21,// inversion ON
+  PCF8833_DALO =     0x22,// all pixel OFF
+  PCF8833_DAL =      0x23,// all pixel ON
+  PCF8833_SETCON =   0x25,// write contrast
+  PCF8833_DISPOFF =  0x28,// display OFF
+  PCF8833_DISPON =   0x29,// display ON
+  PCF8833_CASET =    0x2A,// column address set
+  PCF8833_PASET =    0x2B,// page address set
+  PCF8833_RAMWR =    0x2C,// memory write
+  PCF8833_RGBSET =   0x2D,// colour set
+  PCF8833_PTLAR =    0x30,// partial area
+  PCF8833_VSCRDEF =  0x33,// vertical scrolling definition
+  PCF8833_TEOFF =    0x34,// test mode
+  PCF8833_TEON =     0x35,// test mode
+  PCF8833_MADCTL =   0x36,// memory access control
+  PCF8833_SEP =      0x37,// vertical scrolling start address
+  PCF8833_IDMOFF =   0x38,// idle mode OFF
+  PCF8833_IDMON =    0x39,// idle mode ON
+  PCF8833_COLMOD =   0x3A,// interface pixel format
+  PCF8833_SETVOP =   0xB0,// set Vop
+  PCF8833_BRSOFF =   0xB4,// bottom row swap
+  PCF8833_BRSON =    0xB5,// bottom row swap
+  PCF8833_TRSOFF =   0xB6,// top row swap
+  PCF8833_TRSON =    0xB7,// top row swap
+  PCF8833_FINVOFF =  0xB8,// display control
+  PCF8833_DISCTR =   0xB9,// display control
+  PCF8833_DOROFF =   0xBA,// data order
+  PCF8833_DORON =    0xBB,// data order
+  PCF8833_TCDFE =    0xBD,// enable/disable DF temperature compensation
+  PCF8833_TCVOPE =   0xBF,// enable/disable Vop temp comp
+  PCF8833_EC =       0xC0,// internal or external oscillator
+  PCF8833_SETMUL =   0xC2,// set multiplication factor
+  PCF8833_TCVOPAB =  0xC3,// set TCVOP slopes A and B
+  PCF8833_TCVOPCD =  0xC4,// set TCVOP slopes c and d
+  PCF8833_TCDF =     0xC5,// set divider frequency
+  PCF8833_DF8COLOR = 0xC6,// set divider frequency 8-color mode
+  PCF8833_SETBS =    0xC7,// set bias system
+  PCF8833_RDTEMP =   0xC8,// temperature read back
+  PCF8833_NLI =      0xC9,// n-line inversion
+  PCF8833_RDID1 =    0xDA,// read ID1
+  PCF8833_RDID2 =    0xDB,// read ID2
+  PCF8833_RDID3 =    0xDC,// read ID3
+} PCF8833_COMMANDS;
 
 // mirror Y, mirror X, BGR
 #define NOKIA6100_MADCTL_DATA 0xC8
@@ -195,17 +229,18 @@ void PCF8833_SPI9bits_Flush(void);
 void PCF8833_Data_Bitbang(uint8_t data);
 void PCF8833_Command_Bitbang(uint8_t command);
 
-void PCF8833_Init(ACCESS_MODE access_mode);
-void PCF8833_ColorMode(COLOR_MODE color_mode);
-void PCF8833_SetOrientation(ORIENTATION_MODE orientation_mode,uint8_t mirror);
-void PCF8833_DisplayInversion(DISPLAY_INVERSION display_inversion);
-void PCF8833_SetRGB(RGB_MODE rgb_mode);
+//void PCF8833_Init(PCF8833_InitTypeDef* PCF8833_InitStruct);
+void PCF8833_Init(PCF8833_ACCESS_MODE access_mode);
+void PCF8833_ColorMode(PCF8833_COLOR_MODE color_mode);
+void PCF8833_SetOrientation(PCF8833_ORIENTATION_MODE orientation_mode,uint8_t mirror);
+void PCF8833_DisplayInversion(PCF8833_DISPLAY_INVERSION display_inversion);
+void PCF8833_SetRGB(PCF8833_RGB_MODE rgb_mode);
 void PCF8833_SetupColor(uint8_t *color_map,uint8_t size);
 void PCF8833_SetContrast(uint8_t contrast);
 
 void PCF8833_ClearScreen(uint16_t color);
 
-void PCF8833_SetFont(FONT_SIZE font_size);
+void PCF8833_SetFont(PCF8833_FONT_SIZE font_size);
 void PCF8833_SetTextColours(uint16_t fColor, uint16_t bColor);
 void PCF8833_PutChar(char c, uint8_t x, uint8_t y);
 void PCF8833_PutStr(char *pString, uint8_t x, uint8_t y);

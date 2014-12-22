@@ -12,34 +12,34 @@
 #include "font8x8.h"
 #include "font8x14.h"
 
-static COLOR_MODE PCF8833_color_mode;
-static ACCESS_MODE PCF8833_access_mode;
-static ORIENTATION_MODE PCF8833_orientation_mode;
+static PCF8833_COLOR_MODE PCF8833_color_mode;
+static PCF8833_ACCESS_MODE PCF8833_access_mode;
+static PCF8833_ORIENTATION_MODE PCF8833_orientation_mode;
 static uint8_t PCF8833_v,PCF8833_mirror;
-static RGB_MODE PCF8833_rgb_mode;
-static FONT_SIZE PCF8833_font_size;
+static PCF8833_RGB_MODE PCF8833_rgb_mode;
+static PCF8833_FONT_SIZE PCF8833_font_size;
 static uint16_t PCF8833_text_foreground_color=0xFFFF;
 static uint16_t PCF8833_text_background_color=0x0000;
 
-static PIN pins_bb[]={
-  {{CS_Pin, CS_Speed, CS_Mode_BB}, CS_Port, CS_Bus},
-  {{SCLK_Pin,SCLK_Speed,SCLK_Mode_BB},SCLK_Port,SCLK_Bus},
-  {{SDATA_Pin,SDATA_Speed,SDATA_Mode_BB},SDATA_Port,SDATA_Bus},
-  {{RST_Pin,RST_Speed,RST_Mode},RST_Port,RST_Bus},
+static PCF8833_PIN pins_bb[]={
+  {{PCF8833_CS_Pin, PCF8833_CS_Speed, PCF8833_CS_Mode_BB}, PCF8833_CS_Port, PCF8833_CS_Bus},
+  {{PCF8833_SCLK_Pin,PCF8833_SCLK_Speed,PCF8833_SCLK_Mode_BB},PCF8833_SCLK_Port,PCF8833_SCLK_Bus},
+  {{PCF8833_SDATA_Pin,PCF8833_SDATA_Speed,PCF8833_SDATA_Mode_BB},PCF8833_SDATA_Port,PCF8833_SDATA_Bus},
+  {{PCF8833_RST_Pin,PCF8833_RST_Speed,PCF8833_RST_Mode},PCF8833_RST_Port,PCF8833_RST_Bus},
 };
 
-static PIN pins_spi[]={
-  {{CS_Pin, CS_Speed, CS_Mode_SPI}, CS_Port, CS_Bus},
-  {{SCLK_Pin,SCLK_Speed,SCLK_Mode_SPI},SCLK_Port,SCLK_Bus},
-  {{SDATA_Pin,SDATA_Speed,SDATA_Mode_SPI},SDATA_Port,SDATA_Bus},
-  {{RST_Pin,RST_Speed,RST_Mode},RST_Port,RST_Bus},
+static PCF8833_PIN pins_spi[]={
+  {{PCF8833_CS_Pin, PCF8833_CS_Speed, PCF8833_CS_Mode_SPI}, PCF8833_CS_Port, PCF8833_CS_Bus},
+  {{PCF8833_SCLK_Pin,PCF8833_SCLK_Speed,PCF8833_SCLK_Mode_SPI},PCF8833_SCLK_Port,PCF8833_SCLK_Bus},
+  {{PCF8833_SDATA_Pin,PCF8833_SDATA_Speed,PCF8833_SDATA_Mode_SPI},PCF8833_SDATA_Port,PCF8833_SDATA_Bus},
+  {{PCF8833_RST_Pin,PCF8833_RST_Speed,PCF8833_RST_Mode},PCF8833_RST_Port,PCF8833_RST_Bus},
 };
 
 static unsigned char *FontTable[] = {
-    (unsigned char *)FONT6x8,
-    (unsigned char *)FONT8x8,
-    (unsigned char *)FONT8x14
-  };
+  (unsigned char *)FONT6x8,
+  (unsigned char *)FONT8x8,
+  (unsigned char *)FONT8x14
+};
 
 static uint8_t buf_in[9];
 static uint8_t inbuf=0;
@@ -47,8 +47,6 @@ static uint8_t inbuf=0;
 static void PCF8833_Reset(void);
 static void PCF8833_GPIO_SPI_Config(void);
 static void PCF8833_GPIO_Bitbang_Config(void);
-
-
 
 // Color maps
 //
@@ -78,52 +76,48 @@ void PCF8833_Command_Bitbang(uint8_t command) {
 
   uint32_t Bit;
 
-  SCLK_Port->BRR = SCLK_Pin;
-
-  SDATA_Port->BRR = SDATA_Pin;
-
-  SCLK_Port->BSRR = SCLK_Pin;
-  SCLK_Port->BRR = SCLK_Pin;
+  PCF8833_SCLK_Port->BRR = PCF8833_SCLK_Pin;
+  PCF8833_SDATA_Port->BRR = PCF8833_SDATA_Pin;
+  PCF8833_SCLK_Port->BSRR = PCF8833_SCLK_Pin;
+  PCF8833_SCLK_Port->BRR = PCF8833_SCLK_Pin;
 
   for (Bit = (1<<7); Bit; Bit>>=1) {
 
-    SCLK_Port->BRR = SCLK_Pin;
+    PCF8833_SCLK_Port->BRR = PCF8833_SCLK_Pin;
 
     if(command&Bit) {
-      SDATA_Port->BSRR = SDATA_Pin;
+      PCF8833_SDATA_Port->BSRR = PCF8833_SDATA_Pin;
     }
     else {
-      SDATA_Port->BRR = SDATA_Pin;
+      PCF8833_SDATA_Port->BRR = PCF8833_SDATA_Pin;
     }
-    SCLK_Port->BSRR = SCLK_Pin;
+    PCF8833_SCLK_Port->BSRR = PCF8833_SCLK_Pin;
   }
-  SCLK_Port->BRR = SCLK_Pin;
+  PCF8833_SCLK_Port->BRR = PCF8833_SCLK_Pin;
 }
 
 void PCF8833_Data_Bitbang(uint8_t data) {
 
   uint32_t Bit;
 
-  SCLK_Port->BRR = SCLK_Pin;
-
-  SDATA_Port->BSRR = SDATA_Pin;
-
-  SCLK_Port->BSRR = SCLK_Pin;
-  SCLK_Port->BRR = SCLK_Pin;
+  PCF8833_SCLK_Port->BRR = PCF8833_SCLK_Pin;
+  PCF8833_SDATA_Port->BSRR = PCF8833_SDATA_Pin;
+  PCF8833_SCLK_Port->BSRR = PCF8833_SCLK_Pin;
+  PCF8833_SCLK_Port->BRR = PCF8833_SCLK_Pin;
 
   for (Bit = (1<<7); Bit; Bit>>=1) {
 
-    SCLK_Port->BRR = SCLK_Pin;
+    PCF8833_SCLK_Port->BRR = PCF8833_SCLK_Pin;
 
     if(data&Bit) {
-      SDATA_Port->BSRR = SDATA_Pin;
+      PCF8833_SDATA_Port->BSRR = PCF8833_SDATA_Pin;
     }
     else {
-      SDATA_Port->BRR = SDATA_Pin;
+      PCF8833_SDATA_Port->BRR = PCF8833_SDATA_Pin;
     }
-    SCLK_Port->BSRR = SCLK_Pin;
+    PCF8833_SCLK_Port->BSRR = PCF8833_SCLK_Pin;
   }
-  SCLK_Port->BRR = SCLK_Pin;
+  PCF8833_SCLK_Port->BRR = PCF8833_SCLK_Pin;
 }
 
 void PCF8833_SPI9bits(uint16_t bits9) {
@@ -135,8 +129,8 @@ void PCF8833_SPI9bits(uint16_t bits9) {
 
     uint32_t i;
     for(i=0;i<9;i++) {
-      while (!(SPI1->SR & SPI_I2S_FLAG_TXE));
-      SPI1->DR = buf_in[i];
+      while (!(PCF8833_SPI->SR & SPI_I2S_FLAG_TXE)){};
+      PCF8833_SPI->DR = buf_in[i];
       buf_in[i]=0;
     }
     inbuf=0;
@@ -148,8 +142,8 @@ void PCF8833_SPI9bits_Flush(void) {
   uint32_t i;
 
   for(i=0;i<9;i++) {
-    while (!(SPI1->SR & SPI_I2S_FLAG_TXE));
-    SPI1->DR = buf_in[i];
+    while (!(PCF8833_SPI->SR & SPI_I2S_FLAG_TXE)){};
+    PCF8833_SPI->DR = buf_in[i];
     buf_in[i]=0;
   }
   inbuf=0;
@@ -159,14 +153,14 @@ void PCF8833_SetupColor(uint8_t *color_map,uint8_t size) {
 
   uint32_t i;
   switch(PCF8833_access_mode) {
-    case ACCESS_BITBANG:
-      PCF8833_Command_Bitbang(RGBSET);
+    case PCF8833_ACCESS_BITBANG:
+      PCF8833_Command_Bitbang(PCF8833_RGBSET);
       for(i=0;i<size;i++) {
         PCF8833_Data_Bitbang(color_map[i]);
       }
       break;
-    case ACCESS_SPI9BITS:
-      PCF8833_SPI9bits(RGBSET);
+    case PCF8833_ACCESS_SPI9BITS:
+      PCF8833_SPI9bits(PCF8833_RGBSET);
       for(i=0;i<size;i++) {
         PCF8833_SPI9bits(color_map[i]|0x100);
       }
@@ -176,9 +170,9 @@ void PCF8833_SetupColor(uint8_t *color_map,uint8_t size) {
 
 static void PCF8833_Reset(void) {
 
-  GPIO_ResetBits(RST_Port, RST_Pin);
+  GPIO_ResetBits(PCF8833_RST_Port, PCF8833_RST_Pin);
   DWT_Delay(1000);
-  GPIO_SetBits(RST_Port, RST_Pin);
+  GPIO_SetBits(PCF8833_RST_Port, PCF8833_RST_Pin);
   DWT_Delay(10000);
 }
 
@@ -188,12 +182,13 @@ static void PCF8833_GPIO_SPI_Config(void) {
 
   SPI_InitTypeDef  SPI_InitStructure;
 
-  for(i=0;i<sizeof(pins_spi)/sizeof(PIN);i++) {
+  for(i=0;i<sizeof(pins_spi)/sizeof(PCF8833_PIN);i++) {
     RCC_APB2PeriphClockCmd(pins_spi[i].GPIO_Bus,ENABLE);
     GPIO_Init(pins_spi[i].GPIOx,&pins_spi[i].GPIO_InitStructure);
   }
 
-  RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
+  PCF8833_SPI_Bus_Enable;
+
   SPI_InitStructure.SPI_Direction = SPI_Direction_1Line_Tx;
   SPI_InitStructure.SPI_Mode = SPI_Mode_Master;
   SPI_InitStructure.SPI_DataSize = SPI_DataSize_8b;
@@ -203,79 +198,80 @@ static void PCF8833_GPIO_SPI_Config(void) {
   SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_2;
   SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;
   SPI_InitStructure.SPI_CRCPolynomial = 7;
-  SPI_Init(SPI1, &SPI_InitStructure);
-  SPI_SSOutputCmd(SPI1,ENABLE);
-  SPI_Cmd(SPI1, ENABLE);
-
+  SPI_Init(PCF8833_SPI, &SPI_InitStructure);
+  SPI_SSOutputCmd(PCF8833_SPI,ENABLE);
+  SPI_Cmd(PCF8833_SPI, ENABLE);
 }
 
 static void PCF8833_GPIO_Bitbang_Config(void) {
 
   uint32_t i;
 
-  SPI_Cmd(SPI1, DISABLE);
-  RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, DISABLE);
+  SPI_Cmd(PCF8833_SPI, DISABLE);
+  PCF8833_SPI_Bus_Disable;
 
-  for(i=0;i<sizeof(pins_bb)/sizeof(PIN);i++) {
+  for(i=0;i<sizeof(pins_bb)/sizeof(PCF8833_PIN);i++) {
     RCC_APB2PeriphClockCmd(pins_bb[i].GPIO_Bus,ENABLE);
     GPIO_Init(pins_bb[i].GPIOx,&pins_bb[i].GPIO_InitStructure);
   }
 }
 
-void PCF8833_Init(ACCESS_MODE access_mode) {
+void PCF8833_Init(PCF8833_ACCESS_MODE access_mode) {
 
   PCF8833_access_mode=access_mode;
 
-  switch(access_mode) {
-    case ACCESS_BITBANG:
+  switch(PCF8833_access_mode) {
+    case PCF8833_ACCESS_BITBANG:
       PCF8833_GPIO_Bitbang_Config();
       break;
-    case ACCESS_SPI9BITS:
+    case PCF8833_ACCESS_SPI9BITS:
       PCF8833_GPIO_SPI_Config();
       break;
   }
 
   PCF8833_Reset();
 
-  switch(access_mode) {
-    case ACCESS_BITBANG:
-      PCF8833_Command_Bitbang(SLEEPOUT);
+  GPIO_ResetBits(PCF8833_CS_Port, PCF8833_CS_Pin);
+
+  switch(PCF8833_access_mode) {
+    case PCF8833_ACCESS_BITBANG:
+      PCF8833_Command_Bitbang(PCF8833_SLEEPOUT);
       DWT_Delay(10000);
-      PCF8833_Command_Bitbang(DISPON);
+      PCF8833_Command_Bitbang(PCF8833_DISPON);
       break;
-    case ACCESS_SPI9BITS:
-      PCF8833_SPI9bits(SLEEPOUT);
+    case PCF8833_ACCESS_SPI9BITS:
+      PCF8833_SPI9bits(PCF8833_SLEEPOUT);
       PCF8833_SPI9bits_Flush();
       DWT_Delay(10000);
-      PCF8833_SPI9bits(DISPON);
+      PCF8833_SPI9bits(PCF8833_DISPON);
       PCF8833_SPI9bits_Flush();
       break;
   }
 }
 
-void PCF8833_DisplayInversion(DISPLAY_INVERSION display_inversion) {
+void PCF8833_DisplayInversion(PCF8833_DISPLAY_INVERSION display_inversion) {
 
   switch(PCF8833_access_mode) {
-    case ACCESS_BITBANG:
+    case PCF8833_ACCESS_BITBANG:
       PCF8833_Command_Bitbang(display_inversion);
       break;
-    case ACCESS_SPI9BITS:
+    case PCF8833_ACCESS_SPI9BITS:
       PCF8833_SPI9bits(display_inversion);
     break;
   }
 }
 
-void PCF8833_ColorMode(COLOR_MODE color_mode) {
+void PCF8833_ColorMode(PCF8833_COLOR_MODE color_mode) {
 
   PCF8833_color_mode=color_mode;
 
   switch(PCF8833_access_mode) {
-    case ACCESS_BITBANG:
-      PCF8833_Command_Bitbang(COLMOD);
+    case PCF8833_ACCESS_BITBANG:
+      PCF8833_Command_Bitbang(PCF8833_COLMOD);
       PCF8833_Data_Bitbang(color_mode);
       break;
-    case ACCESS_SPI9BITS:
-      PCF8833_SPI9bits(COLMOD);
+    case PCF8833_ACCESS_SPI9BITS:
+      PCF8833_SPI9bits(PCF8833_COLMOD);
       PCF8833_SPI9bits(color_mode|0x100);
     break;
   }
@@ -289,15 +285,15 @@ void PCF8833_ClearScreen(uint16_t color) {
   PCF8833_SetWindow(0,0,131,131);
 
   switch(PCF8833_access_mode) {
-    case ACCESS_BITBANG:
+    case PCF8833_ACCESS_BITBANG:
       switch(PCF8833_color_mode) {
-        case COLOR_8BIT:
+        case PCF8833_COLOR_8BIT:
           data1=((color>>8)&0xE0)|((color>>6)&0x1C)|((color>>3)&0x03);
           for(i=0;i<((132*132));i++) {
             PCF8833_Data_Bitbang(data1);
           }
           break;
-        case COLOR_12BIT:
+        case PCF8833_COLOR_12BIT:
           data1=((color>>8)&0xF0)|((color>>7)&0x0F);
           data2=((color<<3)&0xF0)|(color>>12);
           data3=((color>>3)&0xF0)|((color>>1)&0x0F);
@@ -307,7 +303,7 @@ void PCF8833_ClearScreen(uint16_t color) {
             PCF8833_Data_Bitbang(data3);
           }
           break;
-        case COLOR_16BIT:
+        case PCF8833_COLOR_16BIT:
           data1=color>>8;
           data2=color;
           for(i=0;i<((132*132));i++) {
@@ -317,15 +313,15 @@ void PCF8833_ClearScreen(uint16_t color) {
           break;
       }
       break;
-    case ACCESS_SPI9BITS:
+    case PCF8833_ACCESS_SPI9BITS:
       switch(PCF8833_color_mode) {
-        case COLOR_8BIT:
+        case PCF8833_COLOR_8BIT:
           data1=((color>>8)&0xE0)|((color>>6)&0x1C)|((color>>3)&0x03);
           for(i=0;i<((132*132));i++) {
             PCF8833_SPI9bits(data1|0x100);
           }
           break;
-        case COLOR_12BIT:
+        case PCF8833_COLOR_12BIT:
           data1=((color>>8)&0xF0)|((color>>7)&0x0F);
           data2=((color<<3)&0xF0)|(color>>12);
           data3=((color>>3)&0xF0)|((color>>1)&0x0F);
@@ -335,7 +331,7 @@ void PCF8833_ClearScreen(uint16_t color) {
             PCF8833_SPI9bits(data3|0x100);
           }
           break;
-        case COLOR_16BIT:
+        case PCF8833_COLOR_16BIT:
           data1=color>>8;
           data2=color;
           for(i=0;i<((132*132));i++) {
@@ -349,7 +345,7 @@ void PCF8833_ClearScreen(uint16_t color) {
   }
 }
 
-void PCF8833_SetFont(FONT_SIZE font_size) {
+void PCF8833_SetFont(PCF8833_FONT_SIZE font_size) {
 
   PCF8833_font_size=font_size;
 }
@@ -413,15 +409,15 @@ void PCF8833_PutChar(char c, uint8_t x, uint8_t y) {
       Mask >>= 1;
 
       switch(PCF8833_access_mode) {
-        case ACCESS_BITBANG:
+        case PCF8833_ACCESS_BITBANG:
           switch(PCF8833_color_mode) {
-            case COLOR_8BIT:
+            case PCF8833_COLOR_8BIT:
               data1=((Word0>>8)&0xE0)|((Word0>>6)&0x1C)|((Word0>>3)&0x03);
               PCF8833_Data_Bitbang(data1);
               data1=((Word1>>8)&0xE0)|((Word1>>6)&0x1C)|((Word1>>3)&0x03);
               PCF8833_Data_Bitbang(data1);
               break;
-            case COLOR_12BIT:
+            case PCF8833_COLOR_12BIT:
               data1=((Word0>>8)&0xF0)|((Word0>>7)&0x0F);
               data2=((Word0<<3)&0xF0)|(Word1>>12);
               data3=((Word1>>3)&0xF0)|((Word1>>1)&0x0F);
@@ -429,7 +425,7 @@ void PCF8833_PutChar(char c, uint8_t x, uint8_t y) {
               PCF8833_Data_Bitbang(data2);
               PCF8833_Data_Bitbang(data3);
               break;
-            case COLOR_16BIT:
+            case PCF8833_COLOR_16BIT:
               data1=Word0>>8;
               data2=Word0;
               PCF8833_Data_Bitbang(data1);
@@ -441,15 +437,15 @@ void PCF8833_PutChar(char c, uint8_t x, uint8_t y) {
               break;
           }
           break;
-        case ACCESS_SPI9BITS:
+        case PCF8833_ACCESS_SPI9BITS:
           switch(PCF8833_color_mode) {
-            case COLOR_8BIT:
+            case PCF8833_COLOR_8BIT:
               data1=((Word0>>8)&0xE0)|((Word0>>6)&0x1C)|((Word0>>3)&0x03);
               PCF8833_SPI9bits(data1|0x100);
               data1=((Word1>>8)&0xE0)|((Word1>>6)&0x1C)|((Word1>>3)&0x03);
               PCF8833_SPI9bits(data1|0x100);
               break;
-            case COLOR_12BIT:
+            case PCF8833_COLOR_12BIT:
               data1=((Word0>>8)&0xF0)|((Word0>>7)&0x0F);
               data2=((Word0<<3)&0xF0)|(Word1>>12);
               data3=((Word1>>3)&0xF0)|((Word1>>1)&0x0F);
@@ -457,7 +453,7 @@ void PCF8833_PutChar(char c, uint8_t x, uint8_t y) {
               PCF8833_SPI9bits(data2|0x100);
               PCF8833_SPI9bits(data3|0x100);
               break;
-            case COLOR_16BIT:
+            case PCF8833_COLOR_16BIT:
               data1=Word0>>8;
               data2=Word0;
               PCF8833_SPI9bits(data1|0x100);
@@ -472,7 +468,7 @@ void PCF8833_PutChar(char c, uint8_t x, uint8_t y) {
       }
     }
   }
-  if(PCF8833_access_mode==ACCESS_SPI9BITS)
+  if(PCF8833_access_mode==PCF8833_ACCESS_SPI9BITS)
     PCF8833_SPI9bits_Flush();
 }
 
@@ -495,32 +491,32 @@ void PCF8833_SetPixel(uint8_t x, uint8_t y, uint16_t color) {
   PCF8833_SetWindow(x,y,x,y);
 
   switch(PCF8833_access_mode) {
-    case ACCESS_BITBANG:
+    case PCF8833_ACCESS_BITBANG:
       switch(PCF8833_color_mode) {
-        case COLOR_8BIT:
+        case PCF8833_COLOR_8BIT:
           PCF8833_Data_Bitbang(((color>>8)&0xE0)|((color>>6)&0x1C)|((color>>3)&0x03));
           break;
-        case COLOR_12BIT:
+        case PCF8833_COLOR_12BIT:
           PCF8833_Data_Bitbang(((color>>8)&0xF0)|((color>>7)&0x0F));
           PCF8833_Data_Bitbang((color<<3)&0xF0);
-          PCF8833_Command_Bitbang(NOP);
+          PCF8833_Command_Bitbang(PCF8833_NOP);
           break;
-        case COLOR_16BIT:
+        case PCF8833_COLOR_16BIT:
           PCF8833_Data_Bitbang(color>>8);
           PCF8833_Data_Bitbang(color);
           break;
       }
       break;
-    case ACCESS_SPI9BITS:
+    case PCF8833_ACCESS_SPI9BITS:
      switch(PCF8833_color_mode) {
-        case COLOR_8BIT:
+        case PCF8833_COLOR_8BIT:
           PCF8833_SPI9bits(((color>>8)&0xE0)|((color>>6)&0x1C)|((color>>3)&0x03)|0x100);
           break;
-        case COLOR_12BIT:
+        case PCF8833_COLOR_12BIT:
           PCF8833_SPI9bits(((color>>8)&0xF0)|((color>>7)&0x0F)|0x100);
           PCF8833_SPI9bits(((color<<3)&0xF0)|0x100);
           break;
-        case COLOR_16BIT:
+        case PCF8833_COLOR_16BIT:
           PCF8833_SPI9bits((color>>8)|0x100);
           PCF8833_SPI9bits((color&0xFF)|0x100);
           break;
@@ -593,15 +589,15 @@ void PCF8833_Rectangle(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1, uint8_t f
     j=(xmax-xmin+1)*(ymax-ymin+1);
 
     switch(PCF8833_access_mode) {
-      case ACCESS_BITBANG:
+      case PCF8833_ACCESS_BITBANG:
         switch(PCF8833_color_mode) {
-          case COLOR_8BIT:
+          case PCF8833_COLOR_8BIT:
             data1=((color>>8)&0xE0)|((color>>6)&0x1C)|((color>>3)&0x03);
             for(i=0;i<j;i++) {
               PCF8833_Data_Bitbang(data1);
             }
             break;
-          case COLOR_12BIT:
+          case PCF8833_COLOR_12BIT:
             data1=((color>>8)&0xF0)|((color>>7)&0x0F);
             data2=((color<<3)&0xF0)|(color>>12);
             data3=((color>>3)&0xF0)|((color>>1)&0x0F);
@@ -611,7 +607,7 @@ void PCF8833_Rectangle(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1, uint8_t f
               PCF8833_Data_Bitbang(data3);
             }
             break;
-          case COLOR_16BIT:
+          case PCF8833_COLOR_16BIT:
             data1=color>>8;
             data2=color;
             for(i=0;i<j;i++) {
@@ -621,15 +617,15 @@ void PCF8833_Rectangle(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1, uint8_t f
             break;
         }
         break;
-      case ACCESS_SPI9BITS:
+      case PCF8833_ACCESS_SPI9BITS:
         switch(PCF8833_color_mode) {
-          case COLOR_8BIT:
+          case PCF8833_COLOR_8BIT:
             data1=((color>>8)&0xE0)|((color>>6)&0x1C)|((color>>3)&0x03);
             for(i=0;i<j;i++) {
               PCF8833_SPI9bits(data1|0x100);
             }
             break;
-          case COLOR_12BIT:
+          case PCF8833_COLOR_12BIT:
             data1=((color>>8)&0xF0)|((color>>7)&0x0F);
             data2=((color<<3)&0xF0)|(color>>12);
             data3=((color>>3)&0xF0)|((color>>1)&0x0F);
@@ -639,7 +635,7 @@ void PCF8833_Rectangle(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1, uint8_t f
               PCF8833_SPI9bits(data3|0x100);
             }
             break;
-          case COLOR_16BIT:
+          case PCF8833_COLOR_16BIT:
             data1=color>>8;
             data2=color;
             for(i=0;i<j;i++) {
@@ -693,26 +689,26 @@ void PCF8833_Circle(uint8_t x0, uint8_t y0, uint8_t radius, uint16_t color) {
   }
 }
 
-void PCF8833_SetOrientation(ORIENTATION_MODE orientation_mode,uint8_t mirror) {
+void PCF8833_SetOrientation(PCF8833_ORIENTATION_MODE orientation_mode,uint8_t mirror) {
 
   PCF8833_orientation_mode=orientation_mode;
   PCF8833_v=(orientation_mode&0x20)>>5;
   PCF8833_mirror=mirror;
 
   switch(PCF8833_access_mode) {
-    case ACCESS_BITBANG:
-      PCF8833_Command_Bitbang(MADCTL);
+    case PCF8833_ACCESS_BITBANG:
+      PCF8833_Command_Bitbang(PCF8833_MADCTL);
       PCF8833_Data_Bitbang(PCF8833_orientation_mode|PCF8833_rgb_mode);
       break;
-    case ACCESS_SPI9BITS:
-      PCF8833_SPI9bits(MADCTL);
+    case PCF8833_ACCESS_SPI9BITS:
+      PCF8833_SPI9bits(PCF8833_MADCTL);
       PCF8833_SPI9bits(PCF8833_orientation_mode|PCF8833_rgb_mode|0x100);
       PCF8833_SPI9bits_Flush();
       break;
   }
 }
 
-void PCF8833_SetRGB(RGB_MODE rgb_mode) {
+void PCF8833_SetRGB(PCF8833_RGB_MODE rgb_mode) {
 
   PCF8833_rgb_mode=rgb_mode;
   PCF8833_SetOrientation(PCF8833_orientation_mode,PCF8833_mirror);
@@ -721,12 +717,12 @@ void PCF8833_SetRGB(RGB_MODE rgb_mode) {
 void PCF8833_SetContrast(uint8_t contrast) {
 
   switch(PCF8833_access_mode) {
-    case ACCESS_BITBANG:
-      PCF8833_Command_Bitbang(SETCON);
+    case PCF8833_ACCESS_BITBANG:
+      PCF8833_Command_Bitbang(PCF8833_SETCON);
       PCF8833_Data_Bitbang(contrast);
       break;
-    case ACCESS_SPI9BITS:
-      PCF8833_SPI9bits(SETCON);
+    case PCF8833_ACCESS_SPI9BITS:
+      PCF8833_SPI9bits(PCF8833_SETCON);
       PCF8833_SPI9bits(contrast|0x100);
       PCF8833_SPI9bits_Flush();
       break;
@@ -736,13 +732,13 @@ void PCF8833_SetContrast(uint8_t contrast) {
 void PCF8833_Sleep(void) {
 
   switch(PCF8833_access_mode) {
-    case ACCESS_BITBANG:
-      PCF8833_Command_Bitbang(DISPOFF);
-      PCF8833_Command_Bitbang(SLEEPIN);
+    case PCF8833_ACCESS_BITBANG:
+      PCF8833_Command_Bitbang(PCF8833_DISPOFF);
+      PCF8833_Command_Bitbang(PCF8833_SLEEPIN);
       break;
-    case ACCESS_SPI9BITS:
-      PCF8833_SPI9bits(DISPOFF);
-      PCF8833_SPI9bits(SLEEPIN);
+    case PCF8833_ACCESS_SPI9BITS:
+      PCF8833_SPI9bits(PCF8833_DISPOFF);
+      PCF8833_SPI9bits(PCF8833_SLEEPIN);
       PCF8833_SPI9bits_Flush();
       break;
   }
@@ -750,13 +746,13 @@ void PCF8833_Sleep(void) {
 void PCF8833_Wakeup(void) {
 
   switch(PCF8833_access_mode) {
-    case ACCESS_BITBANG:
-      PCF8833_Command_Bitbang(SLEEPOUT);
-      PCF8833_Command_Bitbang(DISPON);
+    case PCF8833_ACCESS_BITBANG:
+      PCF8833_Command_Bitbang(PCF8833_SLEEPOUT);
+      PCF8833_Command_Bitbang(PCF8833_DISPON);
       break;
-    case ACCESS_SPI9BITS:
-      PCF8833_SPI9bits(SLEEPOUT);
-      PCF8833_SPI9bits(DISPON);
+    case PCF8833_ACCESS_SPI9BITS:
+      PCF8833_SPI9bits(PCF8833_SLEEPOUT);
+      PCF8833_SPI9bits(PCF8833_DISPON);
       PCF8833_SPI9bits_Flush();
       break;
   }
@@ -765,44 +761,44 @@ void PCF8833_Wakeup(void) {
 void PCF8833_SetWindow(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1) {
 
   switch(PCF8833_access_mode) {
-    case ACCESS_BITBANG:
+    case PCF8833_ACCESS_BITBANG:
       if(PCF8833_v^PCF8833_mirror) {
-        PCF8833_Command_Bitbang(CASET);
+        PCF8833_Command_Bitbang(PCF8833_CASET);
       }
       else {
-        PCF8833_Command_Bitbang(PASET);
+        PCF8833_Command_Bitbang(PCF8833_PASET);
       }
 
       PCF8833_Data_Bitbang(y0);
       PCF8833_Data_Bitbang(y1);
       if(PCF8833_v^PCF8833_mirror) {
-        PCF8833_Command_Bitbang(PASET);
+        PCF8833_Command_Bitbang(PCF8833_PASET);
       }
       else {
-        PCF8833_Command_Bitbang(CASET);
+        PCF8833_Command_Bitbang(PCF8833_CASET);
       }
       PCF8833_Data_Bitbang(x0);
       PCF8833_Data_Bitbang(x1);
-      PCF8833_Command_Bitbang(RAMWR);
+      PCF8833_Command_Bitbang(PCF8833_RAMWR);
       break;
-    case ACCESS_SPI9BITS:
+    case PCF8833_ACCESS_SPI9BITS:
       if(PCF8833_v^PCF8833_mirror) {
-        PCF8833_SPI9bits(CASET);
+        PCF8833_SPI9bits(PCF8833_CASET);
       }
       else {
-        PCF8833_SPI9bits(PASET);
+        PCF8833_SPI9bits(PCF8833_PASET);
       }
       PCF8833_SPI9bits(y0|0x100);
       PCF8833_SPI9bits(y1|0x100);
       if(PCF8833_v^PCF8833_mirror) {
-        PCF8833_SPI9bits(PASET);
+        PCF8833_SPI9bits(PCF8833_PASET);
       }
       else {
-        PCF8833_SPI9bits(CASET);
+        PCF8833_SPI9bits(PCF8833_CASET);
       }
       PCF8833_SPI9bits(x0|0x100);
       PCF8833_SPI9bits(x1|0x100);
-      PCF8833_SPI9bits(RAMWR);
+      PCF8833_SPI9bits(PCF8833_RAMWR);
     break;
   }
 }
