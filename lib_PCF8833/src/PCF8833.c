@@ -76,10 +76,8 @@ void PCF8833_Command_Bitbang(uint8_t command) {
 
   uint32_t Bit;
 
-  PCF8833_SCLK_Port->BRR = PCF8833_SCLK_Pin;
   PCF8833_SDATA_Port->BRR = PCF8833_SDATA_Pin;
   PCF8833_SCLK_Port->BSRR = PCF8833_SCLK_Pin;
-  PCF8833_SCLK_Port->BRR = PCF8833_SCLK_Pin;
 
   for (Bit = (1<<7); Bit; Bit>>=1) {
 
@@ -100,10 +98,8 @@ void PCF8833_Data_Bitbang(uint8_t data) {
 
   uint32_t Bit;
 
-  PCF8833_SCLK_Port->BRR = PCF8833_SCLK_Pin;
   PCF8833_SDATA_Port->BSRR = PCF8833_SDATA_Pin;
   PCF8833_SCLK_Port->BSRR = PCF8833_SCLK_Pin;
-  PCF8833_SCLK_Port->BRR = PCF8833_SCLK_Pin;
 
   for (Bit = (1<<7); Bit; Bit>>=1) {
 
@@ -214,6 +210,7 @@ static void PCF8833_GPIO_Bitbang_Config(void) {
     RCC_APB2PeriphClockCmd(pins_bb[i].GPIO_Bus,ENABLE);
     GPIO_Init(pins_bb[i].GPIOx,&pins_bb[i].GPIO_InitStructure);
   }
+	PCF8833_SCLK_Port->BRR = PCF8833_SCLK_Pin;
 }
 
 void PCF8833_Init(PCF8833_ACCESS_MODE access_mode) {
