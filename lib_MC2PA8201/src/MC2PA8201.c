@@ -372,7 +372,7 @@ void MC2PA8201_Wakeup(void) {
   DWT_Delay(5000);
 }
 
-void MC2PA8201_Gamma(uint8_t val) {
+void MC2PA8201_Gamma(GAMMA_VALUE val) {
   wr_reg(GAMMA_SET,val);
 }
 

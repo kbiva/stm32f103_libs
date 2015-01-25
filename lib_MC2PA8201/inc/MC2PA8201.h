@@ -23,12 +23,12 @@ typedef enum _ORIENTATION_MODE {
   ORIENTATION_LANDSCAPE_REV = 0xC0
 } ORIENTATION_MODE;
 
-enum MC2PA8201_GAMMA {
+typedef enum MC2PA8201_GAMMA {
   GAMMA_CURVE1 = 1,
   GAMMA_CURVE2 = 2,
   GAMMA_CURVE3 = 4,
   GAMMA_CURVE4 = 8
-};
+} GAMMA_VALUE;
 
 enum {
   MC2PA8201_OK = 1,
@@ -167,7 +167,7 @@ void MC2PA8201_SetScrollPosition(uint16_t pos);
 void MC2PA8201_ScrollArea(uint16_t y,uint16_t pos);
 void MC2PA8201_Sleep(void);
 void MC2PA8201_Wakeup(void);
-void MC2PA8201_Gamma(uint8_t val);
+void MC2PA8201_Gamma(GAMMA_VALUE val);
 void MC2PA8201_IdleModeOn(void);
 void MC2PA8201_IdleModeOff(void);
 void MC2PA8201_DisplayInversionOn(void);
