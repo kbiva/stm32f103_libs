@@ -172,6 +172,8 @@ void MC2PA8201_IdleModeOn(void);
 void MC2PA8201_IdleModeOff(void);
 void MC2PA8201_DisplayInversionOn(void);
 void MC2PA8201_DisplayInversionOff(void);
+void MC2PA8201_TearingEffectLineOn(void);
+void MC2PA8201_TearingEffectLineOff(void);
 void MC2PA8201_PartialArea(uint16_t y0,uint16_t y1);
 void MC2PA8201_PartialMode(void);
 void MC2PA8201_NormalDisplayMode(void);
