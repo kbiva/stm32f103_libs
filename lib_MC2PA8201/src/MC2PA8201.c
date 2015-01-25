@@ -8,6 +8,20 @@
 #include "stm32f10x_conf.h"
 #include "MC2PA8201.h"
 #include "delay.h"
+#include "colors.h"
+#include "font6x8.h"
+#include "font8x8.h"
+#include "font8x14.h"
+
+static uint32_t MC2PA8201_text_foreground_color=WHITE;
+static uint32_t MC2PA8201_text_background_color=BLACK;
+static FONT_SIZE MC2PA8201_font_size;
+
+static unsigned char *FontTable[] = {
+    (unsigned char *)FONT6x8,
+    (unsigned char *)FONT8x8,
+    (unsigned char *)FONT8x14
+};
 
 static COLOR_MODE MC2PA8201_color_mode;
 static ORIENTATION_MODE MC2PA8201_orientation_mode;
@@ -434,4 +448,144 @@ uint16_t MC2PA8201_GetHeight(void) {
     break;
   }
   return ret;
+}
+
+void MC2PA8201_SetFont(FONT_SIZE font_size) {
+
+  MC2PA8201_font_size=font_size;
+}
+
+void MC2PA8201_SetTextColors(uint32_t fColor, uint32_t bColor) {
+
+  MC2PA8201_text_foreground_color = fColor;
+  MC2PA8201_text_background_color = bColor;
+}
+
+void MC2PA8201_PutChar(char c, uint16_t x, uint16_t y) {
+
+  uint32_t i,j;
+  uint32_t nCols;
+  uint32_t nRows;
+  uint32_t nBytes;
+  uint8_t PixelRow;
+  uint8_t Mask;
+  uint32_t Word0;
+  uint32_t Word1;
+  unsigned char *pFont;
+  unsigned char *pChar;
+  uint8_t r,g,b;
+
+  // get pointer to the beginning of the selected font table
+  pFont = (unsigned char *)FontTable[MC2PA8201_font_size];
+
+  // get the nColumns, nRows and nBytes
+  nCols = *pFont;
+  nRows = *(pFont + 1);
+  nBytes = *(pFont + 2);
+
+  // get pointer to the first byte of the desired character
+  pChar = pFont + (nBytes * (c - 0x1F));
+
+  MC2PA8201_SetWindow(x,y,x + nCols - 1,y + nRows - 1);
+
+  // loop on each row
+  for (i = 0; i < nRows; i++) {
+
+    // copy pixel row from font table and then decrement row
+    PixelRow = *pChar++;
+
+    // loop on each pixel in the row (left to right)
+    // Note: we do two pixels each loop
+    Mask = 0x80;
+    for (j = 0; j < nCols; j += 2) {
+
+      // if pixel bit set, use foreground color; else use the background color
+      // now get the pixel color for two successive pixels
+      if (PixelRow & Mask)
+        Word0 = MC2PA8201_text_foreground_color;
+      else
+        Word0 = MC2PA8201_text_background_color;
+      Mask >>= 1;
+
+      if (PixelRow & Mask)
+        Word1 = MC2PA8201_text_foreground_color;
+      else
+        Word1 = MC2PA8201_text_background_color;
+      Mask >>= 1;
+
+      switch(MC2PA8201_color_mode){
+        case COLOR_12BIT:
+          r=Word0>>16;
+          g=Word0>>8;
+          wr_dat((r&0xF0)|(g>>4));
+          b=Word0;
+          r=Word1>>16;
+          wr_dat((b&0xF0)|(r>>4));
+          g=Word1>>8;
+          b=Word1;
+          wr_dat((g&0xF0)|(b>>4));
+          break;
+        case COLOR_16BIT:
+          r=Word0>>16;
+          g=Word0>>8;
+          wr_dat((r&0xF8)|((g>>5)&0x07));
+          b=Word0;
+          wr_dat(((g<<3)&0x0E)|((b>>3)&0x1F));
+          r=Word1>>16;
+          g=Word1>>8;
+          wr_dat((r&0xF8)|((g>>5)&0x07));
+          b=Word1;
+          wr_dat(((g<<3)&0x0E)|((b>>3)&0x1F));
+          break;
+        case COLOR_18BIT:
+          wr_dat((Word0>>16)&0xFC);
+          wr_dat((Word0>>8)&0xFC);
+          wr_dat(Word0&0xFC);
+          wr_dat((Word1>>16)&0xFC);
+          wr_dat((Word1>>8)&0xFC);
+          wr_dat(Word1&0xFC);
+          break;
+        case COLOR_24BIT:
+          wr_dat(Word0>>16);
+          wr_dat(Word0>>8);
+          wr_dat(Word0);
+          wr_dat(Word1>>16);
+          wr_dat(Word1>>8);
+          wr_dat(Word1);
+          break;
+      }
+    }
+  }
+}
+
+void MC2PA8201_PutStr(char *pString, uint16_t x, uint16_t y) {
+
+  if(y+FontTable[MC2PA8201_font_size][1]>MC2PA8201_GetHeight())
+    return;
+
+  // loop until null-terminator is seen
+  while (*pString) {
+    if (x+FontTable[MC2PA8201_font_size][0]>MC2PA8201_GetWidth()) break;
+    // draw the character
+    MC2PA8201_PutChar(*pString++, x, y);
+    x+=FontTable[MC2PA8201_font_size][0];
+  }
+}
+
+void MC2PA8201_PutStrCEOL(char *pString, uint16_t x, uint16_t y) {
+
+  if(y+FontTable[MC2PA8201_font_size][1]>MC2PA8201_GetHeight())
+    return;
+
+  // loop until null-terminator is seen
+  while (*pString) {
+    if (x+FontTable[MC2PA8201_font_size][0]>MC2PA8201_GetWidth()) break;
+    // draw the character
+    MC2PA8201_PutChar(*pString++, x, y);
+    x+=FontTable[MC2PA8201_font_size][0];
+  }
+  while(x+FontTable[MC2PA8201_font_size][0]<=MC2PA8201_GetWidth()) {
+    MC2PA8201_PutChar(' ', x, y);
+    x+=FontTable[MC2PA8201_font_size][0];
+  }
 }

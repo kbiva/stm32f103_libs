@@ -30,6 +30,12 @@ typedef enum MC2PA8201_GAMMA {
   GAMMA_CURVE4 = 8
 } GAMMA_VALUE;
 
+typedef enum _FONT_SIZE {
+  FONT_6x8 = 0,
+  FONT_8x8 = 1,
+  FONT_8x14 = 2
+} FONT_SIZE;
+
 enum {
   MC2PA8201_OK = 1,
   MC2PA8201_ERROR = 0
@@ -180,5 +186,11 @@ void MC2PA8201_NormalDisplayMode(void);
 void MC2PA8201_SetWindow(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1);
 uint16_t MC2PA8201_GetWidth(void);
 uint16_t MC2PA8201_GetHeight(void);
+
+void MC2PA8201_SetFont(FONT_SIZE font_size);
+void MC2PA8201_SetTextColors(uint32_t fColor, uint32_t bColor);
+void MC2PA8201_PutChar(char c, uint16_t x, uint16_t y);
+void MC2PA8201_PutStr(char *pString, uint16_t x, uint16_t y);
+void MC2PA8201_PutStrCEOL(char *pString, uint16_t x, uint16_t y);
 
 #endif
