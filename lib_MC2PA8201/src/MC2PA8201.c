@@ -159,19 +159,21 @@ void MC2PA8201_ColorMode(COLOR_MODE color_mode) {
   MC2PA8201_color_mode=color_mode;
   wr_reg(INTERFACE_PIXEL_FORMAT,MC2PA8201_color_mode);
 
-  wr_cmd(COLOUR_SET);
   switch(MC2PA8201_color_mode){
     case COLOR_12BIT:
+      wr_cmd(COLOUR_SET);
       for(i=0;i<192;i++) {
         wr_dat(RGB12_18bit[i]);
       }
       break;
     case COLOR_16BIT:
+      wr_cmd(COLOUR_SET);
       for(i=0;i<192;i++) {
         wr_dat(RGB16bit[i]);
       }
       break;
     case COLOR_18BIT:
+      wr_cmd(COLOUR_SET);
       for(i=0;i<192;i++) {
         wr_dat(RGB12_18bit[i]);
       }
