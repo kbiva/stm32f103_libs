@@ -188,65 +188,8 @@ void MC2PA8201_OrientationMode(ORIENTATION_MODE orientation_mode) {
 }
 
 void MC2PA8201_ClearScreen(uint32_t color) {
-  uint32_t i;
-  uint8_t b1,b2,b3,r,g,b;
-
-  switch(MC2PA8201_orientation_mode){
-    case ORIENTATION_PORTRAIT:
-    case ORIENTATION_PORTRAIT_REV:
-      MC2PA8201_SetWindow(0,0,239,319);
-    break;
-    case ORIENTATION_LANDSCAPE:
-    case ORIENTATION_LANDSCAPE_REV:
-      MC2PA8201_SetWindow(0,0,319,239);
-    break;
-  }
-
-  r=color>>16;
-  g=color>>8;
-  b=color;
-
-  switch(MC2PA8201_color_mode) {
-    case COLOR_12BIT:
-      b1=(r&0xF0)|(g>>4);
-      b2=(b&0xF0)|(r>>4);
-      b3=(g&0xF0)|(b>>4);
-
-      for(i=0;i<240*320/2;i++) {
-        wr_dat(b1);
-        wr_dat(b2);
-        wr_dat(b3);
-      }
-      break;
-    case COLOR_16BIT:
-      b1=(r&0xF8)|((g&0xE0)>>5);
-      b2=((g&0x1C)<<3)|((b&0xF8)>>3);
-      for(i=0;i<240*320;i++) {
-        wr_dat(b1);
-        wr_dat(b2);
-      }
-      break;
-    case COLOR_18BIT:
-      b1=r&0xFC;
-      b2=g&0xFC;
-      b3=b&0xFC;
-      for(i=0;i<240*320;i++) {
-        wr_dat(b1);
-        wr_dat(b2);
-        wr_dat(b3);
-      }
-      break;
-    case COLOR_24BIT:
-      b1=r;
-      b2=g;
-      b3=b;
-       for(i=0;i<240*320;i++) {
-        wr_dat(r);
-        wr_dat(g);
-        wr_dat(b);
-      }
-      break;
-  }
+	
+	MC2PA8201_Fill(0,0,MC2PA8201_GetWidth()-1,MC2PA8201_GetHeight()-1,color);
 }
 
 void MC2PA8201_Fill(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,uint32_t color) {
