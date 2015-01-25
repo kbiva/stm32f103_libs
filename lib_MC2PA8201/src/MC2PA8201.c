@@ -204,8 +204,8 @@ void MC2PA8201_OrientationMode(ORIENTATION_MODE orientation_mode) {
 }
 
 void MC2PA8201_ClearScreen(uint32_t color) {
-	
-	MC2PA8201_Fill(0,0,MC2PA8201_GetWidth()-1,MC2PA8201_GetHeight()-1,color);
+
+  MC2PA8201_Fill(0,0,MC2PA8201_GetWidth()-1,MC2PA8201_GetHeight()-1,color);
 }
 
 void MC2PA8201_Fill(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,uint32_t color) {
@@ -409,11 +409,11 @@ void MC2PA8201_DisplayInversionOff(void) {
 }
 
 void MC2PA8201_TearingEffectLineOn(void) {
-	wr_cmd(TEARING_EFFECT_LINE_ON);
+  wr_cmd(TEARING_EFFECT_LINE_ON);
 }
 
 void MC2PA8201_TearingEffectLineOff(void) {
-	wr_cmd(TEARING_EFFECT_LINE_OFF);
+  wr_cmd(TEARING_EFFECT_LINE_OFF);
 }
 
 uint16_t MC2PA8201_GetWidth(void) {
