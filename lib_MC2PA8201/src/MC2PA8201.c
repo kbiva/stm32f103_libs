@@ -109,9 +109,9 @@ static void FSMC_LCD_Init(void)
 
 static void lcd_rst(void) {
 
-  GPIO_ResetBits(GPIOE, GPIO_Pin_1);
+  GPIO_ResetBits(RST_Port, RST_Pin);
   DWT_Delay(100000);
-  GPIO_SetBits(GPIOE, GPIO_Pin_1 );
+  GPIO_SetBits(RST_Port, RST_Pin);
   DWT_Delay(100000);
 }
 
