@@ -192,5 +192,6 @@ void MC2PA8201_SetTextColors(uint32_t fColor, uint32_t bColor);
 void MC2PA8201_PutChar(char c, uint16_t x, uint16_t y);
 void MC2PA8201_PutStr(char *pString, uint16_t x, uint16_t y);
 void MC2PA8201_PutStrCEOL(char *pString, uint16_t x, uint16_t y);
+void MC2PA8201_PutStrCentered(char *pString, uint16_t y);
 
 #endif

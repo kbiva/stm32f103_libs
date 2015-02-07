@@ -12,6 +12,7 @@
 #include "font6x8.h"
 #include "font8x8.h"
 #include "font8x14.h"
+#include <string.h>
 
 static uint32_t MC2PA8201_text_foreground_color=WHITE;
 static uint32_t MC2PA8201_text_background_color=BLACK;
@@ -588,4 +589,11 @@ void MC2PA8201_PutStrCEOL(char *pString, uint16_t x, uint16_t y) {
     MC2PA8201_PutChar(' ', x, y);
     x+=FontTable[MC2PA8201_font_size][0];
   }
+}
+
+void MC2PA8201_PutStrCentered(char *pString, uint16_t y) {
+
+  uint32_t length=strlen(pString)*FontTable[MC2PA8201_font_size][0];
+
+  MC2PA8201_PutStr(pString,length>MC2PA8201_GetWidth()?0:(MC2PA8201_GetWidth()-length)/2,y);
 }
