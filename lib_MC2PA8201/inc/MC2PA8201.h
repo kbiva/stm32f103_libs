@@ -171,6 +171,8 @@ void MC2PA8201_FillPixel(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,uint32_
 void MC2PA8201_Fill(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,uint32_t color);
 void MC2PA8201_SetScrollPosition(uint16_t pos);
 void MC2PA8201_ScrollArea(uint16_t y,uint16_t pos);
+void MC2PA8201_DisplayOff(void);
+void MC2PA8201_DisplayOn(void);
 void MC2PA8201_Sleep(void);
 void MC2PA8201_Wakeup(void);
 void MC2PA8201_Gamma(GAMMA_VALUE val);

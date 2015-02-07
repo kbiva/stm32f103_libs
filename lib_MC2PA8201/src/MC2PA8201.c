@@ -376,6 +376,14 @@ void MC2PA8201_NormalDisplayMode(void) {
   wr_cmd(NORMAL_DISPLAY_MODE_ON);
 }
 
+void MC2PA8201_DisplayOff(void) {
+  wr_cmd(DISPLAY_OFF);
+}
+
+void MC2PA8201_DisplayOn(void) {
+  wr_cmd(DISPLAY_ON);
+}
+
 void MC2PA8201_Sleep(void) {
   wr_cmd(DISPLAY_OFF);
   wr_cmd(SLEEP_IN);
