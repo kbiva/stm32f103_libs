@@ -73,7 +73,7 @@ static PIN pins[]={
   {{RST_Pin,RST_Speed,RST_Mode},RST_Port,RST_Bus},
 };
 
-static void GPIO_Configuration(void){
+static void GPIO_Configuration(void) {
 
   uint32_t i;
 
@@ -163,11 +163,6 @@ uint8_t MC2PA8201_Init(uint8_t AddressSetupTime,uint8_t DataSetupTime) {
   wr_cmd(DISPLAY_INVERSION_OFF);
   wr_cmd(IDLE_MODE_OFF);
   wr_cmd(NORMAL_DISPLAY_MODE_ON);
-
-  //wr_reg(GAMMA_SET,0x08);
-
-  //MC2PA8201_ScrollArea(240);
-
   DWT_Delay(125000);
   wr_cmd(DISPLAY_ON);
 
