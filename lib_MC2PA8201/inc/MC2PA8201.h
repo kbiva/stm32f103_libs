@@ -167,7 +167,7 @@ enum COMMANDS {
 #define LCD_REG8     (*((volatile uint8_t*)0x60000000))
 #define LCD_DAT8     (*((volatile uint8_t*)0x60010000))
 
-uint8_t MC2PA8201_Init(void);
+uint8_t MC2PA8201_Init(uint8_t AddressSetupTime,uint8_t DataSetupTime);
 void MC2PA8201_ColorMode(COLOR_MODE color_mode);
 void MC2PA8201_OrientationMode(ORIENTATION_MODE orientation_mode);
 

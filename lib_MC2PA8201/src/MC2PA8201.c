@@ -83,18 +83,17 @@ static void GPIO_Configuration(void){
   }
 }
 
-static void FSMC_LCD_Init(void)
-{
+static void FSMC_LCD_Init(uint8_t AddressSetupTime,uint8_t DataSetupTime) {
+
   FSMC_NORSRAMInitTypeDef FSMC_NORSRAMInitStructure;
   FSMC_NORSRAMTimingInitTypeDef  FSMC_NORSRAMTimingInitStructure;
 
   /* Enable the FSMC Clock */
   RCC_AHBPeriphClockCmd(RCC_AHBPeriph_FSMC, ENABLE);
-  // Nokia E63 = 3,2
-  // Nokia E73 = 1,1
-  FSMC_NORSRAMTimingInitStructure.FSMC_AddressSetupTime = 0x01;
+
+  FSMC_NORSRAMTimingInitStructure.FSMC_AddressSetupTime = AddressSetupTime;
   FSMC_NORSRAMTimingInitStructure.FSMC_AddressHoldTime = 0x00;
-  FSMC_NORSRAMTimingInitStructure.FSMC_DataSetupTime = 0x02;
+  FSMC_NORSRAMTimingInitStructure.FSMC_DataSetupTime = DataSetupTime;
   FSMC_NORSRAMTimingInitStructure.FSMC_BusTurnAroundDuration = 0x00;
   FSMC_NORSRAMTimingInitStructure.FSMC_CLKDivision = 0x00;
   FSMC_NORSRAMTimingInitStructure.FSMC_DataLatency = 0x00;
@@ -144,10 +143,10 @@ static __forceinline void wr_reg(uint8_t index,uint8_t val) {
   LCD_DAT8 = val;
 }
 
-uint8_t MC2PA8201_Init(void) {
+uint8_t MC2PA8201_Init(uint8_t AddressSetupTime,uint8_t DataSetupTime) {
 
   GPIO_Configuration();
-  FSMC_LCD_Init();
+  FSMC_LCD_Init(AddressSetupTime,DataSetupTime);
 
   lcd_rst();
 
