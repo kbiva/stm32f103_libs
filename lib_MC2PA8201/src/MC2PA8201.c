@@ -160,7 +160,6 @@ uint8_t MC2PA8201_Init(uint8_t AddressSetupTime,uint8_t DataSetupTime) {
   lcd_rst();
 
   wr_cmd(SLEEP_OUT);
-  DWT_Delay(120000);
   wr_cmd(DISPLAY_INVERSION_OFF);
   wr_cmd(IDLE_MODE_OFF);
   wr_cmd(NORMAL_DISPLAY_MODE_ON);
@@ -171,7 +170,6 @@ uint8_t MC2PA8201_Init(uint8_t AddressSetupTime,uint8_t DataSetupTime) {
 
   DWT_Delay(125000);
   wr_cmd(DISPLAY_ON);
-  DWT_Delay(100000);
 
   return MC2PA8201_OK;
 }
