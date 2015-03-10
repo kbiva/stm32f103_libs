@@ -130,6 +130,15 @@ static void lcd_rst(void) {
   DWT_Delay(100000);
 }
 
+static __forceinline uint8_t rd_reg(uint8_t index) {
+  LCD_REG8 = index;
+  return (LCD_DAT8);
+}
+
+static __forceinline uint8_t rd_dat(void) {
+  return (LCD_DAT8);
+}
+
 static __forceinline void wr_cmd(uint8_t index) {
   LCD_REG8 = index;
 }
@@ -604,4 +613,16 @@ void MC2PA8201_PutStrCentered(char *pString, uint16_t y) {
   uint32_t length=strlen(pString)*FontTable[MC2PA8201_font_size][0];
 
   MC2PA8201_PutStr(pString,length>MC2PA8201_GetWidth()?0:(MC2PA8201_GetWidth()-length)/2,y);
+}
+
+void MC2PA8201_ReadRegister(uint8_t reg,uint8_t length,uint8_t *val) {
+
+  uint8_t i;
+
+  // first read is dummy read
+  val[0]=rd_reg(reg);
+
+  for(i=0;i<length;i++) {
+    val[i]=rd_dat();
+  }
 }
