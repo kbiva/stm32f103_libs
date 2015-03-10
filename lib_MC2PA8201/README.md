@@ -14,7 +14,7 @@ Supports 12bit,16bit,18bit and 24bit color, landscape and portrait orientation.
 ### Usage example ###
 ```C
   ... 
-  MC2PA8201_Init();
+  MC2PA8201_Init(0,1);// FSMC write/read timings
   MC2PA8201_ColorMode(COLOR_24BIT);
   MC2PA8201_OrientationMode(ORIENTATION_PORTRAIT);
   MC2PA8201_ClearScreen(BLACK);
