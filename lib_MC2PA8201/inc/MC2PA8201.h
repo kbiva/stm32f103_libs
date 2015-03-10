@@ -95,6 +95,12 @@ enum {
 #define RW_Port   GPIOD
 #define RW_Bus    RCC_APB2Periph_GPIOD
 
+#define RD_Pin    GPIO_Pin_4
+#define RD_Speed  GPIO_Speed_50MHz
+#define RD_Mode   GPIO_Mode_AF_PP
+#define RD_Port   GPIOD
+#define RD_Bus    RCC_APB2Periph_GPIOD
+
 #define RS_Pin    GPIO_Pin_11
 #define RS_Speed  GPIO_Speed_50MHz
 #define RS_Mode   GPIO_Mode_AF_PP

@@ -67,6 +67,7 @@ static PIN pins[]={
   {{DB6_Pin,DB6_Speed,DB6_Mode},DB6_Port,DB6_Bus},
   {{DB7_Pin,DB7_Speed,DB7_Mode},DB7_Port,DB7_Bus},
   {{RW_Pin, RW_Speed, RW_Mode}, RW_Port, RW_Bus},
+  {{RD_Pin, RD_Speed, RD_Mode}, RD_Port, RD_Bus},
   {{RS_Pin, RS_Speed, RS_Mode}, RS_Port, RS_Bus},
   {{CS_Pin, CS_Speed, CS_Mode}, CS_Port, CS_Bus},
   {{RST_Pin,RST_Speed,RST_Mode},RST_Port,RST_Bus},
