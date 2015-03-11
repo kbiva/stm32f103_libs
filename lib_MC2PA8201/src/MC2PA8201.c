@@ -440,9 +440,9 @@ void MC2PA8201_DisplayInversionOff(void) {
   wr_cmd(DISPLAY_INVERSION_OFF);
 }
 
-void MC2PA8201_TearingEffectLineOn(void) {
+void MC2PA8201_TearingEffectLineOn(TE val) {
   wr_cmd(TEARING_EFFECT_LINE_ON);
-  wr_dat(0x00);
+  wr_dat(val);
 }
 
 void MC2PA8201_TearingEffectLineOff(void) {

@@ -30,6 +30,11 @@ typedef enum MC2PA8201_GAMMA {
   GAMMA_CURVE4 = 8
 } GAMMA_VALUE;
 
+typedef enum MC2PA8201_TE {
+  TE_VBLANK = 0x00,
+  TE_VBLANK_HBLANK = 0x01,
+} TE;
+
 typedef enum _FONT_SIZE {
   FONT_6x8 = 0,
   FONT_8x8 = 1,
@@ -186,7 +191,7 @@ void MC2PA8201_IdleModeOn(void);
 void MC2PA8201_IdleModeOff(void);
 void MC2PA8201_DisplayInversionOn(void);
 void MC2PA8201_DisplayInversionOff(void);
-void MC2PA8201_TearingEffectLineOn(void);
+void MC2PA8201_TearingEffectLineOn(TE val);
 void MC2PA8201_TearingEffectLineOff(void);
 void MC2PA8201_PartialArea(uint16_t y0,uint16_t y1);
 void MC2PA8201_PartialMode(void);
