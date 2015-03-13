@@ -211,5 +211,6 @@ void MC2PA8201_PutStrCEOL(char *pString, uint16_t x, uint16_t y);
 void MC2PA8201_PutStrCentered(char *pString, uint16_t y);
 
 void MC2PA8201_ReadRegister(uint8_t reg,uint8_t length,uint8_t *val);
+void MC2PA8201_ReadMemory(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,uint8_t *buf);
 
 #endif

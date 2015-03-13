@@ -683,3 +683,37 @@ void MC2PA8201_ReadRegister(uint8_t reg,uint8_t length,uint8_t *val) {
     val[i]=rd_dat();
   }
 }
+
+void MC2PA8201_ReadMemory(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,uint8_t *data) {
+
+  uint8_t i,j=(x1-x0+1)*(y1-y0+1);
+
+  MC2PA8201_SetReadWindow(x0,y0,x1,y1);
+  // first read is dummy read
+  *data=rd_dat();
+
+  switch(MC2PA8201_color_mode) {
+    case COLOR_12BIT:
+      // always reading even count of pixels
+      for(i=0;i<j;i+=2) {
+        *data++=rd_dat();
+        *data++=rd_dat();
+        *data++=rd_dat();
+      }
+      break;
+    case COLOR_16BIT:
+      for(i=0;i<j;i++) {
+        *data++=rd_dat();
+        *data++=rd_dat();
+      }
+      break;
+    case COLOR_18BIT:
+    case COLOR_24BIT:
+      for(i=0;i<j;i++) {
+        *data++=rd_dat();
+        *data++=rd_dat();
+        *data++=rd_dat();
+      }
+      break;
+  }
+}
