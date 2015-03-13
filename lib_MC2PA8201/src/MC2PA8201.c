@@ -388,7 +388,7 @@ void MC2PA8201_SetPixel(uint16_t x, uint16_t y, uint32_t color)
       break;
     case COLOR_16BIT:
       wr_dat((r&0xF8)|((g>>5)&0x07));
-      wr_dat(((g<<3)&0x0E)|((b>>3)&0x1F));
+      wr_dat(((g<<3)&0xE0)|((b>>3)&0x1F));
       break;
     case COLOR_18BIT:
       wr_dat(r&0xFC);
@@ -600,12 +600,12 @@ void MC2PA8201_PutChar(char c, uint16_t x, uint16_t y) {
           g=Word0>>8;
           wr_dat((r&0xF8)|((g>>5)&0x07));
           b=Word0;
-          wr_dat(((g<<3)&0x0E)|((b>>3)&0x1F));
+          wr_dat(((g<<3)&0xE0)|((b>>3)&0x1F));
           r=Word1>>16;
           g=Word1>>8;
           wr_dat((r&0xF8)|((g>>5)&0x07));
           b=Word1;
-          wr_dat(((g<<3)&0x0E)|((b>>3)&0x1F));
+          wr_dat(((g<<3)&0xE0)|((b>>3)&0x1F));
           break;
         case COLOR_18BIT:
           wr_dat((Word0>>16)&0xFC);
