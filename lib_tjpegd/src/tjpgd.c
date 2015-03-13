@@ -684,56 +684,70 @@ JRESULT mcu_output (
       s += (mx - rx) * 3;  /* Skip truncated pixels */
     }
   }
-
-  /* Convert RGB888 to RGB565 if needed */
+  /* Convert RGB888 to RGB666 if needed */
   if (colorFormat == 1) {
     BYTE *s = (BYTE*)jd->workbuf;
     BYTE b, *d = (BYTE*)s;
     UINT n = rx * ry;
 
     do {
-      b = *s++ & 0xF8;         /* RRRRR----------- */
-      b |= *s >> 5;             /* -----GGG-------- */
+      b = *s++ & 0xFC;        /* RRRRRR-- */
       *d++ = b;
-      b = (*s++ & 0x1C) << 3;  /* --------GGG----- */
-      b |= *s++ >> 3;           /* -----------BBBBB */
+      b = *s++ & 0xFC;        /* GGGGGG-- */
       *d++ = b;
-    } while (--n);
-  }
-  /* Convert RGB888 to RGB444 if needed */
-  else if (colorFormat == 2) {
-    BYTE *s = (BYTE*)jd->workbuf;
-    BYTE b, *d = (BYTE*)s;
-    UINT n = rx * ry /2;
-
-    do {
-      b = *s++ & 0xF0;        /* RRRR------------ */
-      b |= *s++ >> 4;          /* -----GGGG------- */
-      *d++ = b;
-      b = *s++ & 0xF0;        /* ------------BBBB */
-      b |= *s++ >> 4;          /* RRRR------------ */
-      *d++ = b;
-      b = *s++ & 0xF0;        /* -----GGGG------- */
-      b |= *s++ >> 4;          /* ------------BBBB */
+      b = *s++ & 0xFC;        /* BBBBBB-- */
       *d++ = b;
     } while (--n);
   }
-  /* Convert RGB888 to RGB322 if needed */
-  else if (colorFormat == 3) {
+  /* Convert RGB888 to RGB565 if needed */
+  if (colorFormat == 2) {
     BYTE *s = (BYTE*)jd->workbuf;
     BYTE b, *d = (BYTE*)s;
     UINT n = rx * ry;
 
     do {
-      b = (*s++ & 0xE0);    /* RRR------------- */
-      b |= (*s++ >>3)&0x1C;  /* -----GGG-------- */
-      b |= *s++ >> 6;        /* --------------BB */
+      b = *s++ & 0xF8;         /* RRRRR--- */
+      b |= *s >> 5;            /* -----GGG */
+      *d++ = b;
+      b = (*s++ & 0x1C) << 3;  /* GGG----- */
+      b |= *s++ >> 3;          /* ---BBBBB */
+      *d++ = b;
+    } while (--n);
+  }
+  /* Convert RGB888 to RGB444 if needed */
+  else if (colorFormat == 3) {
+    BYTE *s = (BYTE*)jd->workbuf;
+    BYTE b, *d = (BYTE*)s;
+    UINT n = rx * ry /2;
+
+    do {
+      b = *s++ & 0xF0;        /* RRRR---- */
+      b |= *s++ >> 4;         /* ----GGGG */
+      *d++ = b;
+      b = *s++ & 0xF0;        /* BBBB---- */
+      b |= *s++ >> 4;         /* ----RRRR */
+      *d++ = b;
+      b = *s++ & 0xF0;        /* GGGG---- */
+      b |= *s++ >> 4;         /* ----BBBB */
+      *d++ = b;
+    } while (--n);
+  }
+  /* Convert RGB888 to RGB322 if needed */
+  else if (colorFormat == 4) {
+    BYTE *s = (BYTE*)jd->workbuf;
+    BYTE b, *d = (BYTE*)s;
+    UINT n = rx * ry;
+
+    do {
+      b = (*s++ & 0xE0);     /* RRR----- */
+      b |= (*s++ >>3)&0x1C;  /* ---GGG-- */
+      b |= *s++ >> 6;        /* ------BB */
       *d++ = b;
     } while (--n);
   }
 
   /* Output the RGB rectangular */
-  return outfunc(jd, jd->workbuf, &rect) ? JDR_OK : JDR_INTR; 
+  return outfunc(jd, jd->workbuf, &rect) ? JDR_OK : JDR_INTR;
 }
 
 
@@ -849,7 +863,7 @@ JRESULT jd_prepare (
       if (seg[5] != 3) return JDR_FMT3;  /* Err: Supports only Y/Cb/Cr format */
 
       /* Check three image components */
-      for (i = 0; i < 3; i++) {  
+      for (i = 0; i < 3; i++) {
         b = seg[7 + 3 * i];              /* Get sampling factor */
         if (!i) {  /* Y component */
           if (b != 0x11 && b != 0x22 && b != 0x21)/* Check sampling factor */
@@ -965,7 +979,11 @@ JRESULT jd_decomp (
   JDEC* jd,                /* Initialized decompression object */
   UINT (*outfunc)(JDEC*, void*, JRECT*),  /* RGB output function */
   BYTE scale,                /* Output de-scaling factor (0 to 3) */
-  BYTE format               /* 0:RGB888 (3 BYTE/pix), 1:RGB565 (1 WORD/pix), 2:RGB444 (1.5 BYTE/pix), 3:RGB332 (1 BYTE/pix) */
+  BYTE format               /* 0:RGB888 (24bit/pix),
+                               1:RGB666 (18bit/pix),
+                               2:RGB565 (16bit/pix),
+                               3:RGB444 (12bit/pix),
+                               4:RGB332 (8bit/pix) */
 )
 {
   UINT x, y, mx, my;
@@ -981,7 +999,7 @@ JRESULT jd_decomp (
   rst = rsc = 0;
 
   colorFormat=format;
-  
+
   rc = JDR_OK;
   for (y = 0; y < jd->height; y += my) {    /* Vertical loop of MCUs */
     for (x = 0; x < jd->width; x += mx) {  /* Horizontal loop of MCUs */
