@@ -341,6 +341,7 @@ void MC2PA8201_FillFromBuffer(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,ui
 
   switch(MC2PA8201_color_mode) {
     case COLOR_12BIT:
+      // always writing even count of pixels
       for(i=0;i<j;i+=2) {
         wr_dat(*data++);
         wr_dat(*data++);
@@ -354,14 +355,8 @@ void MC2PA8201_FillFromBuffer(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,ui
       }
       break;
     case COLOR_18BIT:
-      for(i=0;i<j;i++) {
-        wr_dat(*data++);
-        wr_dat(*data++);
-        wr_dat(*data++);
-      }
-      break;
     case COLOR_24BIT:
-       for(i=0;i<j;i++) {
+      for(i=0;i<j;i++) {
         wr_dat(*data++);
         wr_dat(*data++);
         wr_dat(*data++);
