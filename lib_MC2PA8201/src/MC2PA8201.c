@@ -237,7 +237,7 @@ void MC2PA8201_Fill(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,uint32_t col
   uint32_t i,j=(x1-x0+1)*(y1-y0+1);
   uint8_t b1,b2,b3,r,g,b;
 
-  MC2PA8201_SetWindow(x0,y0,x1,y1);
+  MC2PA8201_SetWriteWindow(x0,y0,x1,y1);
 
   r=color>>16;
   g=color>>8;
@@ -292,15 +292,25 @@ void MC2PA8201_SetWindow(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1) {
   wr_dat(y0);
   wr_dat(y1>>8);
   wr_dat(y1);
+}
 
+void MC2PA8201_SetWriteWindow(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1) {
+
+  MC2PA8201_SetWindow(x0,y0,x1,y1);
   wr_cmd(MEMORY_WRITE);
+}
+
+void MC2PA8201_SetReadWindow(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1) {
+
+  MC2PA8201_SetWindow(x0,y0,x1,y1);
+  wr_cmd(MEMORY_READ);
 }
 
 void MC2PA8201_FillPixel(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,uint32_t *color) {
 
   uint32_t i,j=(x1-x0+1)*(y1-y0+1);
 
-  MC2PA8201_SetWindow(x0,y0,x1,y1);
+  MC2PA8201_SetWriteWindow(x0,y0,x1,y1);
 
   switch(MC2PA8201_color_mode) {
     case COLOR_12BIT:
@@ -337,7 +347,7 @@ void MC2PA8201_FillFromBuffer(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,ui
 
   uint32_t i,j=(x1-x0+1)*(y1-y0+1);
 
-  MC2PA8201_SetWindow(x0,y0,x1,y1);
+  MC2PA8201_SetWriteWindow(x0,y0,x1,y1);
 
   switch(MC2PA8201_color_mode) {
     case COLOR_12BIT:
@@ -369,7 +379,7 @@ void MC2PA8201_SetPixel(uint16_t x, uint16_t y, uint32_t color)
 {
   uint8_t r,g,b;
 
-  MC2PA8201_SetWindow(x,y,x,y);
+  MC2PA8201_SetWriteWindow(x,y,x,y);
 
   r=color>>16;
   g=color>>8;
@@ -551,7 +561,7 @@ void MC2PA8201_PutChar(char c, uint16_t x, uint16_t y) {
   // get pointer to the first byte of the desired character
   pChar = pFont + (nBytes * (c - 0x1F));
 
-  MC2PA8201_SetWindow(x,y,x + nCols - 1,y + nRows - 1);
+  MC2PA8201_SetWriteWindow(x,y,x + nCols - 1,y + nRows - 1);
 
   // loop on each row
   for (i = 0; i < nRows; i++) {

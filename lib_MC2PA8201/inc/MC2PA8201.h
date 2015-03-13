@@ -198,6 +198,8 @@ void MC2PA8201_PartialArea(uint16_t y0,uint16_t y1);
 void MC2PA8201_PartialMode(void);
 void MC2PA8201_NormalDisplayMode(void);
 void MC2PA8201_SetWindow(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1);
+void MC2PA8201_SetWriteWindow(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1);
+void MC2PA8201_SetReadWindow(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1);
 uint16_t MC2PA8201_GetWidth(void);
 uint16_t MC2PA8201_GetHeight(void);
 
