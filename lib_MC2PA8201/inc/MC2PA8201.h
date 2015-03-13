@@ -179,6 +179,7 @@ void MC2PA8201_OrientationMode(ORIENTATION_MODE orientation_mode);
 void MC2PA8201_ClearScreen(uint32_t color);
 void MC2PA8201_SetPixel(uint16_t x, uint16_t y, uint32_t color);
 void MC2PA8201_FillPixel(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,uint32_t *color);
+void MC2PA8201_FillFromBuffer(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,uint8_t *data);
 void MC2PA8201_Fill(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,uint32_t color);
 void MC2PA8201_SetScrollPosition(uint16_t pos);
 void MC2PA8201_ScrollArea(uint16_t y,uint16_t pos);

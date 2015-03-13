@@ -333,6 +333,43 @@ void MC2PA8201_FillPixel(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,uint32_
   }
 }
 
+void MC2PA8201_FillFromBuffer(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,uint8_t *data) {
+
+  uint32_t i,j=(x1-x0+1)*(y1-y0+1);
+
+  MC2PA8201_SetWindow(x0,y0,x1,y1);
+
+  switch(MC2PA8201_color_mode) {
+    case COLOR_12BIT:
+      for(i=0;i<j;i+=2) {
+        wr_dat(*data++);
+        wr_dat(*data++);
+        wr_dat(*data++);
+      }
+      break;
+    case COLOR_16BIT:
+      for(i=0;i<j;i++) {
+        wr_dat(*data++);
+        wr_dat(*data++);
+      }
+      break;
+    case COLOR_18BIT:
+      for(i=0;i<j;i++) {
+        wr_dat(*data++);
+        wr_dat(*data++);
+        wr_dat(*data++);
+      }
+      break;
+    case COLOR_24BIT:
+       for(i=0;i<j;i++) {
+        wr_dat(*data++);
+        wr_dat(*data++);
+        wr_dat(*data++);
+      }
+      break;
+  }
+}
+
 void MC2PA8201_SetPixel(uint16_t x, uint16_t y, uint32_t color)
 {
   uint8_t r,g,b;
