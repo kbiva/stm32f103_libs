@@ -1,5 +1,5 @@
 /*
- *  MC2PA8201.h
+ *  MC2PA8201.c
  *
  *  Author: Kestutis Bivainis
  *
