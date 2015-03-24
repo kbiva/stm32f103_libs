@@ -296,4 +296,7 @@ void LGDP4532_PutStr(char *pString, uint16_t x, uint16_t y);
 void LGDP4532_PutStrCEOL(char *pString, uint16_t x, uint16_t y);
 void LGDP4532_PutStrCentered(char *pString, uint16_t y);
 
+void LGDP4532_ReadRegister(uint8_t reg,uint8_t length,uint16_t *val);
+void LGDP4532_ReadMemory(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,uint16_t *data);
+
 #endif

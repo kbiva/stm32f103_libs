@@ -609,3 +609,29 @@ void LGDP4532_PutStrCentered(char *pString, uint16_t y) {
 
   LGDP4532_PutStr(pString,length>LGDP4532_GetWidth()?0:(LGDP4532_GetWidth()-length)/2,y);
 }
+
+void LGDP4532_ReadRegister(uint8_t reg,uint8_t length,uint16_t *val) {
+
+  uint8_t i;
+
+  // first read is dummy read
+  val[0]=rd_reg(reg);
+
+  for(i=0;i<length;i++) {
+    val[i]=rd_dat();
+  }
+}
+
+void LGDP4532_ReadMemory(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,uint16_t *data) {
+
+  uint8_t i,j=(x1-x0+1)*(y1-y0+1);
+
+  LGDP4532_SetWindow(x0,y0,x1,y1);
+  // first read is dummy read
+  *data=rd_dat();
+
+  // in 18 bit color LSB of R and B dot data are not read out
+  for(i=0;i<j;i++) {
+    *data++=rd_dat();
+  }
+}
