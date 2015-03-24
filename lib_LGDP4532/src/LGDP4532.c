@@ -170,7 +170,7 @@ uint8_t LGDP4532_Init(uint8_t AddressSetupTime,uint8_t DataSetupTime) {
 
     wr_reg(EPROMCONTROLREGISTER2,0x0002); // EPROM Control Register 2
     wr_reg(GATESCANCONTROL1,0x2700); // Driver Output Control // set GS bit, lines 320
-    wr_reg(GATESCANCONTROL2,0x0001); // Base Image Display Control
+    wr_reg(GATESCANCONTROL2,0x0003); // Base Image Display Control // scroll enable
     wr_reg(PANELINTERFACECONTROL1,0x0182); // Panel Interface Control 1 //set DIV1-0,RTN4-0 ,0199
     wr_reg(PANELINTERFACECONTROL3,0x0001); // Panel Interface Control 3
     wr_reg(TESTREGISTER4,0x0010); // Test Register 4
