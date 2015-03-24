@@ -323,6 +323,34 @@ void LGDP4532_FillPixel(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,uint32_t
   }
 }
 
+void LGDP4532_FillFromBuffer(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,uint8_t *data) {
+
+  uint32_t i,j=(x1-x0+1)*(y1-y0+1);
+  uint16_t p;
+
+  LGDP4532_SetWindow(x0,y0,x1,y1);
+
+  switch(LGDP4532_color_mode) {
+    case COLOR_16BIT:
+      for(i=0;i<j;i++) {
+        p=(*data++)<<8;
+        p|=*data++;
+        wr_dat(p);
+      }
+      break;
+    case COLOR_18BIT:
+      for(i=0;i<j;i++) {
+        p=(*data)>>6;
+        wr_dat(p);
+        p=(*data++)<<10;
+        p|=(*data++)<<4;
+        p|=(*data++)>>2;
+        wr_dat(p);
+      }
+      break;
+  }
+}
+
 void LGDP4532_FillPixel_16bit(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,uint16_t *color) {
 
   uint32_t i,j;
