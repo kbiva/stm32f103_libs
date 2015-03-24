@@ -602,3 +602,10 @@ void LGDP4532_PutStrCEOL(char *pString, uint16_t x, uint16_t y) {
     x+=FontTable[LGDP4532_font_size][0];
   }
 }
+
+void LGDP4532_PutStrCentered(char *pString, uint16_t y) {
+
+  uint32_t length=strlen(pString)*FontTable[LGDP4532_font_size][0];
+
+  LGDP4532_PutStr(pString,length>LGDP4532_GetWidth()?0:(LGDP4532_GetWidth()-length)/2,y);
+}

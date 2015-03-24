@@ -294,5 +294,6 @@ void LGDP4532_SetTextColors(uint32_t fColor, uint32_t bColor);
 void LGDP4532_PutChar(char c, uint16_t x, uint16_t y);
 void LGDP4532_PutStr(char *pString, uint16_t x, uint16_t y);
 void LGDP4532_PutStrCEOL(char *pString, uint16_t x, uint16_t y);
+void LGDP4532_PutStrCentered(char *pString, uint16_t y);
 
 #endif
