@@ -261,10 +261,15 @@ typedef enum _FONT_SIZE {
   FONT_8x14 = 2
 } FONT_SIZE;
 
+enum {
+  LGDP4532_OK = 1,
+  LGDP4532_ERROR = 0
+};
+
 #define LCD_REG16     (*((volatile uint16_t*)0x60000000))
 #define LCD_DAT16     (*((volatile uint16_t*)0x60020000))
 
-void LGDP4532_Init(void);
+uint8_t LGDP4532_Init(uint8_t AddressSetupTime,uint8_t DataSetupTime);
 //void LGDP4532_Gamma(uint16_t g1_,uint16_t g2_,uint16_t g3_,uint16_t g4_,uint16_t g5_,
 //                    uint16_t g6_,uint16_t g7_,uint16_t g8_,uint16_t g9_,uint16_t g10_);
 void LGDP4532_ClearScreen(uint32_t color);

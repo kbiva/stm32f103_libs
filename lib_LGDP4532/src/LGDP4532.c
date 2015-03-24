@@ -62,16 +62,16 @@ static void GPIO_Configuration(void){
   }
 }
 
-static void FSMC_LCD_Init(void) {
+static void FSMC_LCD_Init(uint8_t AddressSetupTime,uint8_t DataSetupTime) {
 
   FSMC_NORSRAMInitTypeDef FSMC_NORSRAMInitStructure;
   FSMC_NORSRAMTimingInitTypeDef  FSMC_NORSRAMTimingInitStructure;
 
   RCC_AHBPeriphClockCmd(RCC_AHBPeriph_FSMC, ENABLE);
 
-  FSMC_NORSRAMTimingInitStructure.FSMC_AddressSetupTime = 0x00;
+  FSMC_NORSRAMTimingInitStructure.FSMC_AddressSetupTime = AddressSetupTime;
   FSMC_NORSRAMTimingInitStructure.FSMC_AddressHoldTime = 0x00;
-  FSMC_NORSRAMTimingInitStructure.FSMC_DataSetupTime = 0x01;
+  FSMC_NORSRAMTimingInitStructure.FSMC_DataSetupTime = DataSetupTime;
   FSMC_NORSRAMTimingInitStructure.FSMC_BusTurnAroundDuration = 0x00;
   FSMC_NORSRAMTimingInitStructure.FSMC_CLKDivision = 0x00;
   FSMC_NORSRAMTimingInitStructure.FSMC_DataLatency = 0x00;
@@ -127,79 +127,85 @@ static __forceinline uint16_t rd_dat(void) {
   return (LCD_DAT16);
 }
 
-void LGDP4532_Init(void) {
+uint8_t LGDP4532_Init(uint8_t AddressSetupTime,uint8_t DataSetupTime) {
 
-  //volatile uint32_t id=0;
+  uint16_t id=0;
 
   GPIO_Configuration();
-  FSMC_LCD_Init();
+  FSMC_LCD_Init(AddressSetupTime,DataSetupTime);
 
   lcd_rst();
 
   LGDP4532_color_mode=COLOR_16BIT;
   LGDP4532_orientation_mode=ORIENTATION_LANDSCAPE;
 
-  //id=rd_reg(0x00); // Device code read id = 4532
+  LGDP4532_ReadRegister(0x00,1,&id); // Device code read id = 4532
 
-// power on
-  wr_reg(STARTOSCILLATION,0x0001); // Start oscillation
-  DWT_Delay(17);
-  wr_reg(REGULATORCONTROL,0x0030); // Regulator Control
-  wr_reg(POWERCTRL2,0x0040); // Power Control 2 //set dc1,dc0,vc2:0:0040
-  wr_reg(POWERCTRL1,0x1628); // Power Control 1 //set bt,sap,ap:1628
-  wr_reg(POWERCTRL3,0x0000); // Power Control 3 //set vrh
-  wr_reg(POWERCTRL4,0x104d); // Power Control 4 //set vdv,vcm
-  DWT_Delay(17);
-  wr_reg(POWERCTRL3,0x0010); // Power Control 3 //set vrh:0010
-  DWT_Delay(17);
-  wr_reg(POWERCTRL1,0x2620); // Power Control 1 //set bt,sap,ap:2620
-  wr_reg(POWERCTRL4,0x344d); // Power Control 4 //set vdv,vcm
-  DWT_Delay(17);
-// end power on
+  if(id==0x4532) {
 
-  wr_reg(DRIVEROUTPUTCONTROL,0x0100); // Driver output control //set sm,ss
-  wr_reg(DRIVINGWAVECONTROL,0x0300); // LCD Driving Wave Control ///set line/frame inversion ,BC0,EOR,NW5-0
+  // power on
+    wr_reg(STARTOSCILLATION,0x0001); // Start oscillation
+    DWT_Delay(17);
+    wr_reg(REGULATORCONTROL,0x0030); // Regulator Control
+    wr_reg(POWERCTRL2,0x0040); // Power Control 2 //set dc1,dc0,vc2:0:0040
+    wr_reg(POWERCTRL1,0x1628); // Power Control 1 //set bt,sap,ap:1628
+    wr_reg(POWERCTRL3,0x0000); // Power Control 3 //set vrh
+    wr_reg(POWERCTRL4,0x104d); // Power Control 4 //set vdv,vcm
+    DWT_Delay(17);
+    wr_reg(POWERCTRL3,0x0010); // Power Control 3 //set vrh:0010
+    DWT_Delay(17);
+    wr_reg(POWERCTRL1,0x2620); // Power Control 1 //set bt,sap,ap:2620
+    wr_reg(POWERCTRL4,0x344d); // Power Control 4 //set vdv,vcm
+    DWT_Delay(17);
+  // end power on
 
-  wr_reg(ENTRYMODE,LGDP4532_color_mode|LGDP4532_orientation_mode);
+    wr_reg(DRIVEROUTPUTCONTROL,0x0100); // Driver output control //set sm,ss
+    wr_reg(DRIVINGWAVECONTROL,0x0300); // LCD Driving Wave Control ///set line/frame inversion ,BC0,EOR,NW5-0
 
-  wr_reg(DISPLAYCTRL2,0x0604); // Display Control 2 //set fp,bp 0604
-  wr_reg(DISPLAYCTRL3,0x0000); // Display Control 3 // PTG normal scan
-  wr_reg(DISPLAYCTRL4,0x0008); // Display Control 4 // FMARK on, interval 1 frame
+    wr_reg(ENTRYMODE,LGDP4532_color_mode|LGDP4532_orientation_mode);
 
-  wr_reg(EPROMCONTROLREGISTER2,0x0002); // EPROM Control Register 2
-  wr_reg(GATESCANCONTROL1,0x2700); // Driver Output Control // set GS bit, lines 320
-  wr_reg(GATESCANCONTROL2,0x0001); // Base Image Display Control
-  wr_reg(PANELINTERFACECONTROL1,0x0182); // Panel Interface Control 1 //set DIV1-0,RTN4-0 ,0199
-  wr_reg(PANELINTERFACECONTROL3,0x0001); // Panel Interface Control 3
-  wr_reg(TESTREGISTER4,0x0010); // Test Register 4
-  DWT_Delay(17);
-  //Delay(10);
+    wr_reg(DISPLAYCTRL2,0x0604); // Display Control 2 //set fp,bp 0604
+    wr_reg(DISPLAYCTRL3,0x0000); // Display Control 3 // PTG normal scan
+    wr_reg(DISPLAYCTRL4,0x0008); // Display Control 4 // FMARK on, interval 1 frame
 
-//set gamma
-  wr_reg(GAMMACONTROL_RED1,0x0000); // Red Gamma Control 1-16
-  wr_reg(GAMMACONTROL_RED2,0x0502); // Red Gamma Control 1-16
-  wr_reg(GAMMACONTROL_RED3,0x0307); // Red Gamma Control 1-16
-  wr_reg(GAMMACONTROL_RED4,0x0305); // Red Gamma Control 1-16
-  wr_reg(GAMMACONTROL_RED5,0x0004); // Red Gamma Control 1-16
-  wr_reg(GAMMACONTROL_RED6,0x0402); // Red Gamma Control 1-16
-  wr_reg(GAMMACONTROL_RED7,0x0707); // Red Gamma Control 1-16
-  wr_reg(GAMMACONTROL_RED8,0x0503); // Red Gamma Control 1-16
-  wr_reg(GAMMACONTROL_RED9,0x1505); // Red Gamma Control 1-16
-  wr_reg(GAMMACONTROL_RED10,0x1505); // Red Gamma Control 1-16
-  DWT_Delay(17);
-//end gamma set
+    wr_reg(EPROMCONTROLREGISTER2,0x0002); // EPROM Control Register 2
+    wr_reg(GATESCANCONTROL1,0x2700); // Driver Output Control // set GS bit, lines 320
+    wr_reg(GATESCANCONTROL2,0x0001); // Base Image Display Control
+    wr_reg(PANELINTERFACECONTROL1,0x0182); // Panel Interface Control 1 //set DIV1-0,RTN4-0 ,0199
+    wr_reg(PANELINTERFACECONTROL3,0x0001); // Panel Interface Control 3
+    wr_reg(TESTREGISTER4,0x0010); // Test Register 4
+    DWT_Delay(17);
+    //Delay(10);
 
-//Display on
-  wr_reg(DISPLAYCTRL1,0x0001); // Display Control 1
-  DWT_Delay(17);
-  wr_reg(DISPLAYCTRL1,0x0021); // Display Control 1
-  wr_reg(DISPLAYCTRL1,0x0023); // Display Control 1
-  DWT_Delay(17);
-  wr_reg(DISPLAYCTRL1,0x0033); // Display Control 1
-  DWT_Delay(17);
-  wr_reg(DISPLAYCTRL1,0x0133); // Display Control 1
-//end display on
+  //set gamma
+    wr_reg(GAMMACONTROL_RED1,0x0000); // Red Gamma Control 1-16
+    wr_reg(GAMMACONTROL_RED2,0x0502); // Red Gamma Control 1-16
+    wr_reg(GAMMACONTROL_RED3,0x0307); // Red Gamma Control 1-16
+    wr_reg(GAMMACONTROL_RED4,0x0305); // Red Gamma Control 1-16
+    wr_reg(GAMMACONTROL_RED5,0x0004); // Red Gamma Control 1-16
+    wr_reg(GAMMACONTROL_RED6,0x0402); // Red Gamma Control 1-16
+    wr_reg(GAMMACONTROL_RED7,0x0707); // Red Gamma Control 1-16
+    wr_reg(GAMMACONTROL_RED8,0x0503); // Red Gamma Control 1-16
+    wr_reg(GAMMACONTROL_RED9,0x1505); // Red Gamma Control 1-16
+    wr_reg(GAMMACONTROL_RED10,0x1505); // Red Gamma Control 1-16
+    DWT_Delay(17);
+  //end gamma set
 
+  //Display on
+    wr_reg(DISPLAYCTRL1,0x0001); // Display Control 1
+    DWT_Delay(17);
+    wr_reg(DISPLAYCTRL1,0x0021); // Display Control 1
+    wr_reg(DISPLAYCTRL1,0x0023); // Display Control 1
+    DWT_Delay(17);
+    wr_reg(DISPLAYCTRL1,0x0033); // Display Control 1
+    DWT_Delay(17);
+    wr_reg(DISPLAYCTRL1,0x0133); // Display Control 1
+  //end display on
+
+    return LGDP4532_OK;
+  }
+
+  return LGDP4532_ERROR;
 }
 
 void LGDP4532_ColorMode(COLOR_MODE color_mode) {
