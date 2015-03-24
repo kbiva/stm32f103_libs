@@ -268,17 +268,15 @@ void LGDP4532_SetPixel(uint16_t x,uint16_t y,uint32_t color) {
 
 void LGDP4532_ClearScreen(uint32_t color) {
 
-  LGDP4532_FillRectangle(0,0,LGDP4532_GetWidth()-1,LGDP4532_GetHeight()-1,color);
+  LGDP4532_Fill(0,0,LGDP4532_GetWidth()-1,LGDP4532_GetHeight()-1,color);
 }
 
-void LGDP4532_FillRectangle(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,uint32_t color) {
+void LGDP4532_Fill(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,uint32_t color) {
 
-  uint32_t i,j;
+  uint32_t i,j=(x1-x0+1)*(y1-y0+1);
   uint16_t dest1,dest2;
 
   LGDP4532_SetWindow(x0,y0,x1,y1);
-
-  j=(x1-x0+1)*(y1-y0+1);
 
   switch(LGDP4532_color_mode){
     case COLOR_16BIT:

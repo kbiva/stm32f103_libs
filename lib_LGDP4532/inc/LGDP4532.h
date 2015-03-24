@@ -271,7 +271,7 @@ void LGDP4532_ClearScreen(uint32_t color);
 void LGDP4532_SetPixel(uint16_t x,uint16_t y,uint32_t color);
 void LGDP4532_FillPixel(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,uint32_t *color);
 
-void LGDP4532_FillRectangle(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,uint32_t color);
+void LGDP4532_Fill(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,uint32_t color);
 
 void LGDP4532_SetScrollPosition(uint16_t pos);
 void LGDP4532_SetWindow(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1);
