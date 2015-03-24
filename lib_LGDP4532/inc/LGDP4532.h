@@ -270,8 +270,7 @@ enum {
 #define LCD_DAT16     (*((volatile uint16_t*)0x60020000))
 
 uint8_t LGDP4532_Init(uint8_t AddressSetupTime,uint8_t DataSetupTime);
-//void LGDP4532_Gamma(uint16_t g1_,uint16_t g2_,uint16_t g3_,uint16_t g4_,uint16_t g5_,
-//                    uint16_t g6_,uint16_t g7_,uint16_t g8_,uint16_t g9_,uint16_t g10_);
+
 void LGDP4532_ClearScreen(uint32_t color);
 void LGDP4532_SetPixel(uint16_t x,uint16_t y,uint32_t color);
 void LGDP4532_FillPixel(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,uint32_t *color);

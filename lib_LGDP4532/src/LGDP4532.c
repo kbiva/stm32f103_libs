@@ -52,7 +52,7 @@ static PIN pins[]={
 };
 
 
-static void GPIO_Configuration(void){
+static void GPIO_Configuration(void) {
 
   uint32_t i;
 
@@ -220,22 +220,6 @@ void LGDP4532_OrientationMode(ORIENTATION_MODE orientation_mode) {
   LGDP4532_orientation_mode=orientation_mode;
 }
 
-/*
-void LGDP4532_Gamma(uint16_t g1_,uint16_t g2_,uint16_t g3_,uint16_t g4_,uint16_t g5_,
-                    uint16_t g6_,uint16_t g7_,uint16_t g8_,uint16_t g9_,uint16_t g10_) {
-  wr_reg(GAMMACONTROL1,g1_); // Red Gamma Control 1-16
-  wr_reg(GAMMACONTROL2,g2_); // Red Gamma Control 1-16
-  wr_reg(GAMMACONTROL3,g3_); // Red Gamma Control 1-16
-  wr_reg(GAMMACONTROL4,g4_); // Red Gamma Control 1-16
-  wr_reg(GAMMACONTROL5,g5_); // Red Gamma Control 1-16
-  wr_reg(GAMMACONTROL6,g6_); // Red Gamma Control 1-16
-  wr_reg(GAMMACONTROL7,g7_); // Red Gamma Control 1-16
-  wr_reg(GAMMACONTROL8,g8_); // Red Gamma Control 1-16
-  wr_reg(GAMMACONTROL9,g9_); // Red Gamma Control 1-16
-  wr_reg(GAMMACONTROL10,g10_); // Red Gamma Control 1-16
-}
-*/
-
 void LGDP4532_SetPixel(uint16_t x,uint16_t y,uint32_t color) {
 
   uint16_t dest1,dest2;
@@ -259,6 +243,7 @@ void LGDP4532_SetPixel(uint16_t x,uint16_t y,uint32_t color) {
     break;
   }
   wr_cmd(GRAMSTARTWRITING);
+
   switch(LGDP4532_color_mode){
     case COLOR_16BIT:
       dest1=(color & 0xf80000) >> 8 | (color & 0xfc00) >> 5 | (color & 0xf8) >> 3;
@@ -371,6 +356,7 @@ void LGDP4532_FillPixel_16bit(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,ui
 }
 
 void LGDP4532_SetScrollPosition(uint16_t pos) {
+
   wr_reg(GATESCANCONTROLSCROLL,pos);
 }
 
@@ -410,7 +396,6 @@ void LGDP4532_SetWindow(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1) {
       wr_reg(VERTICALADDRESS,319-y0);
     break;
   }
-
   wr_cmd(GRAMSTARTWRITING);
 }
 
