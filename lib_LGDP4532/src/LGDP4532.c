@@ -12,6 +12,7 @@
 #include "font6x8.h"
 #include "font8x8.h"
 #include "font8x14.h"
+#include <string.h>
 
 static uint32_t LGDP4532_text_foreground_color=WHITE;
 static uint32_t LGDP4532_text_background_color=BLACK;
