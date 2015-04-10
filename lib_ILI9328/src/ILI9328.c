@@ -28,7 +28,6 @@ static PIN pins[]={
   {{RST_Pin,RST_Speed,RST_Mode},RST_Port,RST_Bus},
 };
 
-
 #define TFTLCD_DELAY 0xFF
 
 static const uint16_t ILI9328_regValues[]  = {
@@ -328,8 +327,8 @@ void ILI9328_FillPixel(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,uint32_t 
   }
 }
 
-void ILI9328_SetPixel(uint16_t x, uint16_t y, uint32_t color)
-{
+void ILI9328_SetPixel(uint16_t x, uint16_t y, uint32_t color) {
+
   uint8_t r,g,b;
 
   switch(ILI9328_orientation_mode){
