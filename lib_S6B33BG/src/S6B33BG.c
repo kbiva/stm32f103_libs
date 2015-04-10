@@ -42,16 +42,16 @@ static PIN pins[]={
 };
 
 
-static void FSMC_LCD_Init(void) {
+static void FSMC_LCD_Init(uint8_t AddressSetupTime,uint8_t DataSetupTime) {
 
   FSMC_NORSRAMInitTypeDef FSMC_NORSRAMInitStructure;
   FSMC_NORSRAMTimingInitTypeDef  FSMC_NORSRAMTimingInitStructure;
 
   RCC_AHBPeriphClockCmd(RCC_AHBPeriph_FSMC, ENABLE);
 
-  FSMC_NORSRAMTimingInitStructure.FSMC_AddressSetupTime = 0x00;
+  FSMC_NORSRAMTimingInitStructure.FSMC_AddressSetupTime = AddressSetupTime;
   FSMC_NORSRAMTimingInitStructure.FSMC_AddressHoldTime = 0x00;
-  FSMC_NORSRAMTimingInitStructure.FSMC_DataSetupTime = 0x01;
+  FSMC_NORSRAMTimingInitStructure.FSMC_DataSetupTime = DataSetupTime;
   FSMC_NORSRAMTimingInitStructure.FSMC_BusTurnAroundDuration = 0x00;
   FSMC_NORSRAMTimingInitStructure.FSMC_CLKDivision = 0x00;
   FSMC_NORSRAMTimingInitStructure.FSMC_DataLatency = 0x00;
@@ -108,10 +108,10 @@ void wr_dat(uint8_t val) {
   LCD_DAT8 = val;
 }
 
-uint8_t S6B33BG_Init(void) {
+uint8_t S6B33BG_Init(uint8_t AddressSetupTime,uint8_t DataSetupTime) {
 
   GPIO_Configuration();
-  FSMC_LCD_Init();
+  FSMC_LCD_Init(AddressSetupTime,DataSetupTime);
 
   lcd_rst();
 
