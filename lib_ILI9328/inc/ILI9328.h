@@ -163,7 +163,7 @@ typedef enum _COMMANDS {
 #define LCD_REG8     (*((volatile uint8_t*)0x60000000))
 #define LCD_DAT8     (*((volatile uint8_t*)0x60010000))
 
-uint8_t ILI9328_Init(void);
+uint8_t ILI9328_Init(uint8_t AddressSetupTime,uint8_t DataSetupTime);
 void ILI9328_ColorMode(COLOR_MODE color_mode);
 void ILI9328_OrientationMode(ORIENTATION_MODE orientation_mode);
 

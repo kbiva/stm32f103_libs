@@ -104,16 +104,16 @@ static void GPIO_Configuration(void) {
   }
 }
 
-static void FSMC_LCD_Init(void) {
+static void FSMC_LCD_Init(uint8_t AddressSetupTime,uint8_t DataSetupTime) {
 
   FSMC_NORSRAMInitTypeDef FSMC_NORSRAMInitStructure;
-  FSMC_NORSRAMTimingInitTypeDef  FSMC_NORSRAMTimingInitStructure;
+  FSMC_NORSRAMTimingInitTypeDef FSMC_NORSRAMTimingInitStructure;
 
   RCC_AHBPeriphClockCmd(RCC_AHBPeriph_FSMC, ENABLE);
 
-  FSMC_NORSRAMTimingInitStructure.FSMC_AddressSetupTime = 0x01;
+  FSMC_NORSRAMTimingInitStructure.FSMC_AddressSetupTime = AddressSetupTime;
   FSMC_NORSRAMTimingInitStructure.FSMC_AddressHoldTime = 0x00;
-  FSMC_NORSRAMTimingInitStructure.FSMC_DataSetupTime = 0x02;
+  FSMC_NORSRAMTimingInitStructure.FSMC_DataSetupTime = DataSetupTime;
   FSMC_NORSRAMTimingInitStructure.FSMC_BusTurnAroundDuration = 0x00;
   FSMC_NORSRAMTimingInitStructure.FSMC_CLKDivision = 0x00;
   FSMC_NORSRAMTimingInitStructure.FSMC_DataLatency = 0x00;
@@ -169,32 +169,32 @@ void wr_reg(uint8_t index,uint16_t val) {
 }
 
 static __forceinline
-uint8_t rd_reg(uint8_t index) {
-  wr_cmd(index);
-  return (LCD_DAT8);
-}
-
-static __forceinline
 uint8_t rd_dat(void) {
   return (LCD_DAT8);
 }
 
+static __forceinline 
+uint16_t rd_reg(uint8_t index) {
+  uint16_t ret;
+  wr_cmd(index);
+  ret=rd_dat();
+  return (ret<<8)|rd_dat();
+}
 
-uint8_t ILI9328_Init(void) {
+uint8_t ILI9328_Init(uint8_t AddressSetupTime,uint8_t DataSetupTime) {
 
-  volatile uint8_t id1=0,id2=0;
+  uint16_t id;
 
   GPIO_Configuration();
-  FSMC_LCD_Init();
+  FSMC_LCD_Init(AddressSetupTime,DataSetupTime);
 
   lcd_rst();
 
-  id1=rd_reg(0x00); // 93
-  id2=rd_dat();     // 28
+  id=rd_reg(0x00); // 9328
 
-  if((id1==0x93) && (id2==0x28)) {
+  if(id==0x9328) {
 
-    uint8_t i,a;
+    uint8_t i=0,a;
     uint16_t d;
 
     while(i < sizeof(ILI9328_regValues) / sizeof(uint16_t)) {
