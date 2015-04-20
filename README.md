@@ -16,6 +16,7 @@ All libraries depends on lib_STM32F10x_StdPeriph.
 * <b>lib_LGDP4532</b> - LG LGDP4532 LCD library. Depends on lib_delay.
 * <b>lib_MC2PA8201</b> - MagnaChip MC2PA8201 LCD library (Nokia E61,E63,E73). Depends on lib_delay.
 * <b>lib_MFRC522</b> - RFID Chip MFRC522 driver. Depends on lib_delay.
+* <b>lib_NokiaN70</b> - Nokia N70 LCD controller library (Nokia N70) .Similar to lib_MC2PA8201 with minor differencies. Depends on lib_delay.
 * <b>lib_PCF8833</b> - Philips PCF8833 LCD library (Nokia 3100,6100,6020,6030). Depends on lib_delay.
 * <b>lib_R61523</b> - Renesas R61523 LCD library (Sony Ericsson U5 Vivaz). Depends on lib_delay.
 * <b>lib_S6B33BG</b> - Samsung S6B33BG LCD library (Samsung GT-E1050). Depends on lib_delay.
