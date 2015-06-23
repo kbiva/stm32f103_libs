@@ -28,3 +28,5 @@ All libraries depends on lib_STM32F10x_StdPeriph.
 * <b>lib_tjpegd</b> - TJpgDec library.
 * <b>lib_touch_XPT2046</b> - XPT2046 touch controller.
 * <b>lib_usart</b> - USART
+* <b>lib_xorshift</b> - Xorshift pseudorandom number generator.
+
