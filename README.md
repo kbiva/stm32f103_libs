@@ -23,6 +23,7 @@ All libraries depends on lib_STM32F10x_StdPeriph.
 * <b>lib_rtc</b> - RTC
 * <b>lib_SD_FatFs</b> - FatFs lower layer API (SD support). Depends on lib_FatFs,lib_rtc,lib_SD_SDIO.
 * <b>lib_SD_SDIO</b> - SD SDIO low level API.
+* <b>lib_SPFD54124B</b> - Orise Tech SPFD54124B LCD library (Nokia 6151). Depends on lib_delay.
 * <b>lib_SSD1289</b> - Solomon Systech SSD1289 LCD library. Depends on lib_delay.
 * <b>lib_STM32F10x_StdPeriph</b> - Standart Peripheral Library for STMF103xx v3.6.1
 * <b>lib_tjpegd</b> - TJpgDec library.
