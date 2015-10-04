@@ -52,7 +52,7 @@ DRESULT disk_read (
   BYTE pdrv,    /* Physical drive number (0..) */
   BYTE *buff,    /* Data buffer to store read data */
   DWORD sector,  /* Sector address (LBA) */
-  BYTE count    /* Number of sectors to read (1..128) */
+  UINT count    /* Number of sectors to read (1..128) */
 )
 {
   SD_Error status=SD_OK;
@@ -97,7 +97,7 @@ DRESULT disk_write (
   BYTE pdrv,      /* Physical drive number (0..) */
   const BYTE *buff,  /* Data to be written */
   DWORD sector,    /* Sector address (LBA) */
-  BYTE count      /* Number of sectors to write (1..128) */
+  UINT count      /* Number of sectors to write (1..128) */
 )
 {
   SD_Error status = SD_OK;
@@ -153,7 +153,6 @@ DRESULT disk_ioctl (
         *(WORD*)buff = SDCardInfo.CardBlockSize;
         res = RES_OK;
         break;
-    case CTRL_ERASE_SECTOR:
     case CTRL_POWER:
     case CTRL_LOCK:
     case CTRL_EJECT:
