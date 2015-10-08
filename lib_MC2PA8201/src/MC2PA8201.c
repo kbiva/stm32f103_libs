@@ -146,16 +146,24 @@ uint8_t MC2PA8201_Init(uint8_t AddressSetupTime,uint8_t DataSetupTime) {
   return MC2PA8201_OK;
 }
 
-void MC2PA8201_SetRGBSET_params(uint8_t LUT12bit_size,uint8_t *LUT12bit,
-                                uint8_t LUT16bit_size,uint8_t *LUT16bit,
-                                uint8_t LUT18bit_size,uint8_t *LUT18bit) {
+void MC2PA8201_SetLUT_params(COLOR_MODE color_mode,uint8_t LUT_size,uint8_t *LUT) {
 
-  RGB12bit_size=LUT12bit_size;
-  RGB12bit=LUT12bit;
-  RGB16bit_size=LUT16bit_size;
-  RGB16bit=LUT16bit;
-  RGB18bit_size=LUT18bit_size;
-  RGB18bit=LUT18bit;
+  switch(color_mode) {
+    case COLOR_12BIT:
+      RGB12bit_size=LUT_size;
+      RGB12bit=LUT;
+      break;
+    case COLOR_16BIT:
+      RGB16bit_size=LUT_size;
+      RGB16bit=LUT;
+      break;
+    case COLOR_18BIT:
+      RGB18bit_size=LUT_size;
+      RGB18bit=LUT;
+      break;
+    case COLOR_24BIT:
+      break;
+  }
 }
 
 void MC2PA8201_ColorMode(COLOR_MODE color_mode) {
