@@ -175,6 +175,9 @@ enum COMMANDS {
 uint8_t MC2PA8201_Init(uint8_t AddressSetupTime,uint8_t DataSetupTime);
 void MC2PA8201_ColorMode(COLOR_MODE color_mode);
 void MC2PA8201_OrientationMode(ORIENTATION_MODE orientation_mode);
+void MC2PA8201_SetRGBSET_params(uint8_t RGB12bit_size,uint8_t *RGB12bit,
+                                uint8_t RGB16bit_size,uint8_t *RGB16bit,
+                                uint8_t RGB18bit_size,uint8_t *RGB18bit);
 
 void MC2PA8201_ClearScreen(uint32_t color);
 void MC2PA8201_SetPixel(uint16_t x, uint16_t y, uint32_t color);
