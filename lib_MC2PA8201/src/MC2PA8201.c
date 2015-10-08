@@ -343,8 +343,8 @@ void MC2PA8201_FillFromBuffer(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,ui
   }
 }
 
-void MC2PA8201_SetPixel(uint16_t x, uint16_t y, uint32_t color)
-{
+void MC2PA8201_SetPixel(uint16_t x, uint16_t y, uint32_t color) {
+
   uint8_t r,g,b;
 
   MC2PA8201_SetWriteWindow(x,y,x,y);
