@@ -176,7 +176,11 @@ uint8_t MC2PA8201_Init(uint8_t AddressSetupTime,uint8_t DataSetupTime);
 void MC2PA8201_ColorMode(COLOR_MODE color_mode);
 void MC2PA8201_OrientationMode(ORIENTATION_MODE orientation_mode);
 void MC2PA8201_SetLUT_params(COLOR_MODE color_mode,uint8_t LUT_size,uint8_t *LUT);
-	
+// if dimensions are non standard (Standard: landscape width=320,height=240; portrait width=240,height=320)
+void MC2PA8201_SetDimensions(uint16_t width,uint16_t height);
+// if MADCTL parameters are non standard (Standard: landscape=0x00; portrait=0xA0; landscape_rev=0xC0; portait_rev=0x60)
+void MC2PA8201_SetMADCTL_params(uint8_t landscape,uint8_t portrait,uint8_t landscape_rev,uint8_t portrait_rev);
+
 void MC2PA8201_ClearScreen(uint32_t color);
 void MC2PA8201_SetPixel(uint16_t x, uint16_t y, uint32_t color);
 void MC2PA8201_FillPixel(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,uint32_t *color);

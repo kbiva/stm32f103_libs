@@ -34,6 +34,14 @@ static uint8_t *RGB16bit;
 static uint8_t RGB18bit_size;
 static uint8_t *RGB18bit;
 
+static uint16_t display_width=320;
+static uint16_t display_height=240;
+
+static uint8_t MADCTL_portrait=0xA0;
+static uint8_t MADCTL_landscape=0x00;
+static uint8_t MADCTL_portrait_rev=0x60;
+static uint8_t MADCTL_landscape_rev=0xC0;
+
 static PIN pins[]={
   {{DB0_Pin,DB0_Speed,DB0_Mode},DB0_Port,DB0_Bus},
   {{DB1_Pin,DB1_Speed,DB1_Mode},DB1_Port,DB1_Bus},
@@ -166,6 +174,12 @@ void MC2PA8201_SetLUT_params(COLOR_MODE color_mode,uint8_t LUT_size,uint8_t *LUT
   }
 }
 
+void MC2PA8201_SetDimensions(uint16_t width,uint16_t height) {
+
+  display_width=width;
+  display_height=height;
+}
+
 void MC2PA8201_ColorMode(COLOR_MODE color_mode) {
 
   uint32_t i;
@@ -197,10 +211,34 @@ void MC2PA8201_ColorMode(COLOR_MODE color_mode) {
   }
 }
 
+void MC2PA8201_SetMADCTL_params(uint8_t landscape,uint8_t portrait,uint8_t landscape_rev,uint8_t portrait_rev) {
+
+  MADCTL_landscape=landscape;
+  MADCTL_portrait=portrait;
+  MADCTL_landscape_rev=landscape_rev;
+  MADCTL_portrait_rev=portrait_rev;
+}
+
 void MC2PA8201_OrientationMode(ORIENTATION_MODE orientation_mode) {
 
+  uint8_t MADCTL_param;
+
+  switch(orientation_mode){
+    case ORIENTATION_LANDSCAPE:
+      MADCTL_param=MADCTL_landscape;
+      break;
+    case ORIENTATION_LANDSCAPE_REV:
+      MADCTL_param=MADCTL_landscape_rev;
+      break;
+    case ORIENTATION_PORTRAIT:
+      MADCTL_param=MADCTL_portrait;
+      break;
+    case ORIENTATION_PORTRAIT_REV:
+      MADCTL_param=MADCTL_portrait_rev;
+      break;
+  }
   MC2PA8201_orientation_mode=orientation_mode;
-  wr_reg(MEMORY_ACCESS_CONTROL,orientation_mode);
+  wr_reg(MEMORY_ACCESS_CONTROL,MADCTL_param);
 }
 
 void MC2PA8201_ClearScreen(uint32_t color) {
@@ -474,11 +512,11 @@ uint16_t MC2PA8201_GetWidth(void) {
   switch(MC2PA8201_orientation_mode){
     case ORIENTATION_LANDSCAPE:
     case ORIENTATION_LANDSCAPE_REV:
-      ret=320;
+      ret=display_width;
     break;
     case ORIENTATION_PORTRAIT:
     case ORIENTATION_PORTRAIT_REV:
-      ret=240;
+      ret=display_height;
     break;
   }
   return ret;
@@ -491,11 +529,11 @@ uint16_t MC2PA8201_GetHeight(void) {
   switch(MC2PA8201_orientation_mode){
     case ORIENTATION_LANDSCAPE:
     case ORIENTATION_LANDSCAPE_REV:
-      ret=240;
+      ret=display_height;
     break;
     case ORIENTATION_PORTRAIT:
     case ORIENTATION_PORTRAIT_REV:
-      ret=320;
+      ret=display_width;
     break;
   }
   return ret;
