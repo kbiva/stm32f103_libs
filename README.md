@@ -18,6 +18,7 @@ All libraries depends on lib_STM32F10x_StdPeriph.
 * <b>lib_MFRC522</b> - RFID Chip MFRC522 driver. Depends on lib_delay.
 * <b>lib_PCF8833</b> - Philips PCF8833 LCD library (Nokia 3100,6100,6020,6030). Depends on lib_delay.
 * <b>lib_R61523</b> - Renesas R61523 LCD library (Sony Ericsson U5 Vivaz). Depends on lib_delay.
+* <b>lib_R63400</b> - Renesas R63400 LCD library (Sony Ericsson K800i). Depends on lib_delay.
 * <b>lib_S6B33BG</b> - Samsung S6B33BG LCD library (Samsung GT-E1050). Depends on lib_delay.
 * <b>lib_rtc</b> - RTC
 * <b>lib_SD_FatFs</b> - FatFs lower layer API (SD support). Depends on lib_FatFs,lib_rtc,lib_SD_SDIO.
