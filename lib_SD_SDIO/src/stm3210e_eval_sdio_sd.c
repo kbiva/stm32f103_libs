@@ -863,7 +863,7 @@ SD_Error SD_GetCardInfo(SD_CardInfo *cardinfo)
     /*!< Byte 10 */
     tmp = (uint8_t)((CSD_Tab[2] & 0x0000FF00) >> 8);
 
-    cardinfo->CardCapacity = (cardinfo->SD_csd.DeviceSize + 1) * 512 * 1024;
+    cardinfo->CardCapacity = (uint64_t)(cardinfo->SD_csd.DeviceSize + 1) * 512 * 1024;
     cardinfo->CardBlockSize = 512;
   }
 
