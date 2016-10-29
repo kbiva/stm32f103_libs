@@ -4,6 +4,7 @@
 
 FatFs library. Depends on lib_SD_FatFs (FatFs lower layer API).
 Ported from http://elm-chan.org/fsw/ff/00index_e.html
+Version 0.12b+patch1
 
 ### How do I get set up? ###
 
