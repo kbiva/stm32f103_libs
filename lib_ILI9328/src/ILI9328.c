@@ -331,26 +331,7 @@ void ILI9328_SetPixel(uint16_t x, uint16_t y, uint32_t color) {
 
   uint8_t r,g,b;
 
-  switch(ILI9328_orientation_mode){
-    case ORIENTATION_LANDSCAPE:
-      wr_reg(ILI9328_GRAM_HORZ_AD,239-y);
-      wr_reg(ILI9328_GRAM_VERT_AD,x);
-    break;
-    case ORIENTATION_LANDSCAPE_REV:
-      wr_reg(ILI9328_GRAM_HORZ_AD,y);
-      wr_reg(ILI9328_GRAM_VERT_AD,319-x);
-      break;
-    case ORIENTATION_PORTRAIT:
-      wr_reg(ILI9328_GRAM_HORZ_AD,239-x);
-      wr_reg(ILI9328_GRAM_VERT_AD,319-y);
-    break;
-    case ORIENTATION_PORTRAIT_REV:
-      wr_reg(ILI9328_GRAM_HORZ_AD,x);
-      wr_reg(ILI9328_GRAM_VERT_AD,y);
-    break;
-  }
-
-  wr_cmd(ILI9328_RW_GRAM);
+  ILI9328_SetWindow(x,y,x,y);
 
   r=color>>16;
   g=color>>8;
