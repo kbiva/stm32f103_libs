@@ -25,9 +25,9 @@ All libraries depends on lib_STM32F10x_StdPeriph.
 * <b>lib_SD_SDIO</b> - SD SDIO low level API.
 * <b>lib_SPFD54124B</b> - Orise Tech SPFD54124B LCD library (Nokia 6151). Depends on lib_delay.
 * <b>lib_SSD1289</b> - Solomon Systech SSD1289 LCD library. Depends on lib_delay.
-* <b>lib_STM32F10x_StdPeriph</b> - Standart Peripheral Library for STMF103xx v3.6.1
+* <b>lib_STM32F10x_StdPeriph</b> - Standart Peripheral Library for STM32F103xx v3.6.1
 * <b>lib_tjpegd</b> - TJpgDec library.
-* <b>lib_touch_XPT2046</b> - XPT2046 touch controller.
 * <b>lib_usart</b> - USART
 * <b>lib_xorshift</b> - Xorshift pseudorandom number generator.
+* <b>lib_XPT2046_LGDP4532</b> - library for the XPT2046 touchpanel connected to LGDP4532 LCD.
 
